@@ -61,7 +61,7 @@ let fix_x () =
   end
   else if sx > 21
   then begin
-    position := (sx - 23, 9) (* MAGIC NUMBER, see map.ml *)
+    position := (21 - sx, 9) (* MAGIC NUMBER, see map.ml *)
   ; going := `RIGHT
   end
 

@@ -92,7 +92,7 @@ let rec play () =
       | `NONE -> ()
       | _     -> Audio.wakka () |> Sdlmixer.play_channel ~loops:1
   end
-; Thread.delay 0.5
+; Thread.delay 0.4
 ; if !running
   then play ()
 
