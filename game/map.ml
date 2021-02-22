@@ -7,9 +7,11 @@ let map = String.concat ""
   ; "\x00\x99\xCC\xCC\x77\x00\x99\xCC\x66\x00\xAA\xCC\x55\x00\xBB\xCC\xCC\x55\x00"
   ; "\x00\x00\x00\x00\x33\x00\x00\x00\x33\x00\x33\x00\x00\x00\x33\x00\x00\x00\x00"
   ; "\x00\x00\x00\x00\x33\x00\xAA\xCC\xCD\xCC\xCD\xCC\xAA\x00\x33\x00\x00\x00\x00"
-  ; "\xCC\xCC\xCC\xCC\xFF\xCC\x77\x00\x80\xD0\x40\x00\xBB\xFF\xCC\xCC\xCC\xCC\xCC"
+  ; "\x00\x00\x00\x00\x33\x00\x33\x00\x00\xD0\x00\x00\x33\x00\x33\x00\x00\x00\x00"
+  ; "\xCC\xCC\xCC\xCC\xFF\xCC\x77\x00\x40\xD0\x80\x00\xBB\xFF\xCC\xCC\xCC\xCC\xCC"
   ; "\x00\x00\x00\x00\x33\x00\x33\x00\x00\x00\x00\x00\x33\x00\x33\x00\x00\x00\x00"
   ; "\x00\x00\x00\x00\x33\x00\xBB\xCC\xCC\xCC\xCC\xCC\x77\x00\x33\x00\x00\x00\x00"
+  ; "\x00\x00\x00\x00\x33\x00\x33\x00\x00\x00\x00\x00\x33\x00\x33\x00\x00\x00\x00"
   ; "\x00\xAA\xCC\xCC\xFF\xCC\xDD\xCC\x66\x00\xAA\xCC\xDD\xCC\xFF\xCC\xCC\x66\x00"
   ; "\x00\x33\x00\x00\x33\x00\x00\x00\x33\x00\x33\x00\x00\x00\x33\x00\x00\x33\x00"
   ; "\x00\x99\x66\x00\xBB\xCC\xEE\xCC\xCD\xCC\xCD\xCC\xEE\xCC\x77\x00\xAA\x55\x00"
@@ -26,7 +28,10 @@ let can_go c direction = match direction with
   | `LEFT  -> c land 4 != 0
   | `RIGHT -> c land 8 != 0
 
-let get_cell x y = int_of_char map.[y*19 + x]
+let get_cell x y =
+  if x < 0 || x > 18 || y < 0 || y > 20
+  then 255
+  else int_of_char map.[y*19 + x]
 
 let at actor x y =
   let cell = get_cell x y in
@@ -42,8 +47,8 @@ let at actor x y =
  *)
 
 let%test_unit "map should be enclosed" =
-  for y = 0 to 18 do
-    if y != 8
+  for y = 0 to 20 do
+    if y != 9
     then begin
       let got = get_cell 0 y in
       if got != 0
@@ -57,13 +62,20 @@ let%test_unit "map should be enclosed" =
   let got = get_cell x 0 in
   if got != 0
   then Failure (Printf.sprintf "expected 0 at %d,0, got %d" x got) |> raise
-; let got = get_cell x 18 in
+; let got = get_cell x 20 in
   if got != 0
   then Failure (Printf.sprintf "expected 0 at %d,18, got %d" x got) |> raise
   done
+; for x = 2 to 16 do
+    let got = get_cell x 19 in
+    if (x = 8 || x = 10) && got != 221
+    then Failure (Printf.sprintf "expected 221 at %d,19, got %d" x got) |> raise
+    else if (x != 8 && x != 10) && got != 204
+    then Failure (Printf.sprintf "expected 204 at %d,19, got %d" x got) |> raise
+  done
 
 let%test "map should have two exits" =
-  (get_cell 0 8 = 204) && (get_cell 18 8 = 204)
+  (get_cell 0 9 = 204) && (get_cell 18 9 = 204)
 
 let%test "can_go up" =
   (not (can_go 0 `UP))
