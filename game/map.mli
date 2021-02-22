@@ -1,3 +1,4 @@
-val can_go   : [`UP | `DOWN | `LEFT | `RIGHT] -> int -> bool
-val map      : string
+val at       : [`PACMAN | `GHOST] -> int -> int -> [`UP | `DOWN | `LEFT | `RIGHT] list
+val can_go   : int -> [`UP | `DOWN | `LEFT | `RIGHT] -> bool
 val get_cell : int -> int -> int
+val map      : string

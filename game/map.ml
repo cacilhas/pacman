@@ -20,13 +20,21 @@ let map = String.concat ""
   ; "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
   ]
 
-let can_go direction c = match direction with
+let can_go c direction = match direction with
   | `UP    -> c land 1 != 0
   | `DOWN  -> c land 2 != 0
   | `LEFT  -> c land 4 != 0
   | `RIGHT -> c land 8 != 0
 
 let get_cell x y = int_of_char map.[y*19 + x]
+
+let at actor x y =
+  let cell = get_cell x y in
+  let cell = match actor with
+    | `GHOST  -> cell lsr 4
+    | `PACMAN -> cell land 15
+  in
+  List.filter (can_go cell) [`UP; `DOWN; `LEFT; `RIGHT]
 
 
 (*******************************************************************************
@@ -58,73 +66,101 @@ let%test "map should have two exits" =
   (get_cell 0 8 = 204) && (get_cell 18 8 = 204)
 
 let%test "can_go up" =
-  (not (can_go `UP 0))
-  && (can_go `UP 1)
-  && (not (can_go `UP 2))
-  && (can_go `UP 3)
-  && (not (can_go `UP 4))
-  && (can_go `UP 5)
-  && (not (can_go `UP 6))
-  && (can_go `UP 7)
-  && (not (can_go `UP 8))
-  && (can_go `UP 9)
-  && (not (can_go `UP 10))
-  && (can_go `UP 11)
-  && (not (can_go `UP 12))
-  && (can_go `UP 13)
-  && (not (can_go `UP 14))
-  && (can_go `UP 15)
+  (not (can_go 0 `UP))
+  && (can_go 1 `UP)
+  && (not (can_go 2 `UP))
+  && (can_go 3 `UP)
+  && (not (can_go 4 `UP))
+  && (can_go 5 `UP)
+  && (not (can_go 6 `UP))
+  && (can_go 7 `UP)
+  && (not (can_go 8 `UP))
+  && (can_go 9 `UP)
+  && (not (can_go 10 `UP))
+  && (can_go 11 `UP)
+  && (not (can_go 12 `UP))
+  && (can_go 13 `UP)
+  && (not (can_go 14 `UP))
+  && (can_go 15 `UP)
 
 let%test "can_go down" =
-  (not (can_go `DOWN 0))
-  && (not (can_go `DOWN 1))
-  && (can_go `DOWN 2)
-  && (can_go `DOWN 3)
-  && (not (can_go `DOWN 4))
-  && (not (can_go `DOWN 5))
-  && (can_go `DOWN 6)
-  && (can_go `DOWN 7)
-  && (not (can_go `DOWN 8))
-  && (not (can_go `DOWN 9))
-  && (can_go `DOWN 10)
-  && (can_go `DOWN 11)
-  && (not (can_go `DOWN 12))
-  && (not (can_go `DOWN 13))
-  && (can_go `DOWN 14)
-  && (can_go `DOWN 15)
+  (not (can_go 0 `DOWN))
+  && (not (can_go 1 `DOWN))
+  && (can_go 2 `DOWN)
+  && (can_go 3 `DOWN)
+  && (not (can_go 4 `DOWN))
+  && (not (can_go 5 `DOWN))
+  && (can_go 6 `DOWN)
+  && (can_go 7 `DOWN)
+  && (not (can_go 8 `DOWN))
+  && (not (can_go 9 `DOWN))
+  && (can_go 10 `DOWN)
+  && (can_go 11 `DOWN)
+  && (not (can_go 12 `DOWN))
+  && (not (can_go 13 `DOWN))
+  && (can_go 14 `DOWN)
+  && (can_go 15 `DOWN)
 
 let%test "can_go left" =
-  (not (can_go `LEFT 0))
-  && (not (can_go `LEFT 1))
-  && (not (can_go `LEFT 2))
-  && (not (can_go `LEFT 3))
-  && (can_go `LEFT 4)
-  && (can_go `LEFT 5)
-  && (can_go `LEFT 6)
-  && (can_go `LEFT 7)
-  && (not (can_go `LEFT 8))
-  && (not (can_go `LEFT 9))
-  && (not (can_go `LEFT 10))
-  && (not (can_go `LEFT 11))
-  && (can_go `LEFT 12)
-  && (can_go `LEFT 13)
-  && (can_go `LEFT 14)
-  && (can_go `LEFT 15)
+  (not (can_go 0 `LEFT))
+  && (not (can_go 1 `LEFT))
+  && (not (can_go 2 `LEFT))
+  && (not (can_go 3 `LEFT))
+  && (can_go 4 `LEFT)
+  && (can_go 5 `LEFT)
+  && (can_go 6 `LEFT)
+  && (can_go 7 `LEFT)
+  && (not (can_go 8 `LEFT))
+  && (not (can_go 9 `LEFT))
+  && (not (can_go 10 `LEFT))
+  && (not (can_go 11 `LEFT))
+  && (can_go 12 `LEFT)
+  && (can_go 13 `LEFT)
+  && (can_go 14 `LEFT)
+  && (can_go 15 `LEFT)
 
 let%test "can_go right" =
-  (not (can_go `RIGHT 0))
-  && (not (can_go `RIGHT 1))
-  && (not (can_go `RIGHT 2))
-  && (not (can_go `RIGHT 3))
-  && (not (can_go `RIGHT 4))
-  && (not (can_go `RIGHT 5))
-  && (not (can_go `RIGHT 6))
-  && (not (can_go `RIGHT 7))
-  && (can_go `RIGHT 8)
-  && (can_go `RIGHT 9)
-  && (can_go `RIGHT 10)
-  && (can_go `RIGHT 11)
-  && (can_go `RIGHT 12)
-  && (can_go `RIGHT 13)
-  && (can_go `RIGHT 14)
-  && (can_go `RIGHT 15)
+  (not (can_go 0 `RIGHT))
+  && (not (can_go 1 `RIGHT))
+  && (not (can_go 2 `RIGHT))
+  && (not (can_go 3 `RIGHT))
+  && (not (can_go 4 `RIGHT))
+  && (not (can_go 5 `RIGHT))
+  && (not (can_go 6 `RIGHT))
+  && (not (can_go 7 `RIGHT))
+  && (can_go 8 `RIGHT)
+  && (can_go 9 `RIGHT)
+  && (can_go 10 `RIGHT)
+  && (can_go 11 `RIGHT)
+  && (can_go 12 `RIGHT)
+  && (can_go 13 `RIGHT)
+  && (can_go 14 `RIGHT)
+  && (can_go 15 `RIGHT)
+
+let%test "pacman at 1 1 should go left or down" =
+  let options = at `PACMAN 1 1 in
+  (List.mem `RIGHT options)
+  && (List.mem `DOWN options)
+  && (not (List.mem `UP options))
+  && (not (List.mem `LEFT options))
+
+let%test "ghost at 1 1 should go left or down" =
+  let options = at `GHOST 1 1 in
+  (List.mem `RIGHT options)
+  && (List.mem `DOWN options)
+  && (not (List.mem `UP options))
+  && (not (List.mem `LEFT options))
+
+let%test "pacman at 8 7 should go left, right, or up" =
+  let options = at `PACMAN 8 7 in
+  (List.mem `RIGHT options)
+  && (List.mem `LEFT options)
+  && (List.mem `UP options)
+  && (not (List.mem `DOWN options))
+
+let%test "ghost at 8 7 should go left or right" =
+  let options = at `GHOST 8 7 in
+  (List.mem `RIGHT options)
+  && (List.mem `LEFT options)
+  && (not (List.mem `UP options))
+  && (not (List.mem `DOWN options))
