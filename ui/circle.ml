@@ -52,4 +52,7 @@ let fill_circle surface ~x ~y ~radius color =
     let rect = Sdlvideo.rect ~x:sx ~y:sy ~w:wi ~h:hei in
     Sdlvideo.fill_rect ~rect:rect surface color
   done
+
+let fill_sphere surface ~x ~y ~radius color =
+  fill_circle surface ~x:x ~y:y ~radius:radius color
 ; shade surface (x, y) radius color

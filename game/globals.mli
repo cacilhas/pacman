@@ -1,0 +1,1 @@
+val speed : unit -> float

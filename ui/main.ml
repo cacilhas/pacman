@@ -33,19 +33,42 @@ end = struct
   ; blit_surface surface
 end
 
-let rec loop board =
-  Sdlvideo.map_RGB (Screen.std ()) Sdlvideo.black |> Sdlvideo.fill_rect (Screen.std ())
-; Sdlvideo.map_RGB board Sdlvideo.black |> Sdlvideo.fill_rect board
-; Screen.render board
-; Sdlvideo.flip (Screen.std ())
-; begin
+let running = ref true
+
+let update ticks = if ticks > 0
+  then begin
+    let dt = (float_of_int ticks) /. 1000.0 in
+    Pacman.update dt
+  end
+
+let handle_keypress sym = match sym with
+  | Sdlkey.KEY_ESCAPE -> running := false
+                       ; Thread.exit ()
+  | Sdlkey.KEY_LEFT   -> Pacman.go `LEFT
+  | Sdlkey.KEY_RIGHT  -> Pacman.go `RIGHT
+  | Sdlkey.KEY_UP     -> Pacman.go `UP
+  | Sdlkey.KEY_DOWN   -> Pacman.go `DOWN
+  | _                 -> ()
+
+let rec handle_events () =
+  begin
     match Sdlevent.wait_event() with
-      | Sdlevent.KEYDOWN evt        -> if evt.keysym = Sdlkey.KEY_ESCAPE
-                                       then exit 0
+      | Sdlevent.KEYDOWN evt        -> handle_keypress evt.keysym
       | Sdlevent.VIDEORESIZE (w, h) -> assert (Screen.std () = Screen.resize (w, h))
       | _                           -> ()
   end
-; loop board
+; handle_events ()
+
+let rec loop board ticks last_tick =
+  Sdlvideo.map_RGB (Screen.std ()) Sdlvideo.black |> Sdlvideo.fill_rect (Screen.std ())
+; Sdlvideo.map_RGB board Sdlvideo.black |> Sdlvideo.fill_rect board
+; update (ticks - last_tick)
+; Pacman.render_on board
+; Screen.render board
+; Sdlvideo.flip (Screen.std ())
+; Sdltimer.delay 33
+; if !running
+  then loop board (Sdltimer.get_ticks ()) ticks
 
 let mainloop () =
   Sdl.init [`AUDIO; `EVENTTHREAD; `JOYSTICK; `TIMER; `VIDEO]
@@ -60,4 +83,5 @@ let mainloop () =
               ~bmask:Screen_info.bmask
               ~amask:Screen_info.amask
   in
-  loop board
+  Thread.create handle_events () |> ignore
+; loop board (Sdltimer.get_ticks ()) 0

@@ -1,5 +1,3 @@
-open Game
-
 let walls =
   let surface = Sdlvideo.create_RGB_surface [`HWSURFACE; `SRCALPHA]
                 ~w:240 ~h:48 ~bpp:32
@@ -26,37 +24,37 @@ let walls =
 let render_circle surface x y =
   let dst_rect = Sdlvideo.rect ~x:(x*48) ~y:(y*48) ~w:48 ~h:48
   and src_rect = Sdlvideo.rect ~x:0 ~y:0 ~w:48 ~h:48 in
-  Sdlvideo.blit_surface ~src:walls ~src_rect:src_rect
+  Sdlvideo.blit_surface ~src:walls   ~src_rect:src_rect
                         ~dst:surface ~dst_rect:dst_rect ()
 
 
 let render_cell surface x y =
   render_circle surface x y
 ; let dst_rect = Sdlvideo.rect ~x:(x*48) ~y:(y*48) ~w:48 ~h:48
-  and n = Map.get_cell x (y-1)
-  and s = Map.get_cell x (y+1)
-  and e = Map.get_cell (x-1) y
-  and w = Map.get_cell (x+1) y in
+  and n = Game.Tmap.get_cell (x, y - 1)
+  and s = Game.Tmap.get_cell (x, y + 1)
+  and e = Game.Tmap.get_cell (x - 1, y)
+  and w = Game.Tmap.get_cell (x + 1, y) in
   if n*s*e*w = 0 && n+s+e+w != 0
   then begin
     if n = 0
-    then Sdlvideo.blit_surface ~src:walls ~src_rect:(Sdlvideo.rect ~x:48 ~y:0 ~w:48 ~h:48)
+    then Sdlvideo.blit_surface ~src:walls   ~src_rect:(Sdlvideo.rect ~x:48 ~y:0 ~w:48 ~h:48)
                                ~dst:surface ~dst_rect:dst_rect ()
 ;   if s = 0
-    then Sdlvideo.blit_surface ~src:walls ~src_rect:(Sdlvideo.rect ~x:96 ~y:0 ~w:48 ~h:48)
+    then Sdlvideo.blit_surface ~src:walls   ~src_rect:(Sdlvideo.rect ~x:96 ~y:0 ~w:48 ~h:48)
                                ~dst:surface ~dst_rect:dst_rect ()
 ;   if e = 0
-    then Sdlvideo.blit_surface ~src:walls ~src_rect:(Sdlvideo.rect ~x:144 ~y:0 ~w:48 ~h:48)
+    then Sdlvideo.blit_surface ~src:walls   ~src_rect:(Sdlvideo.rect ~x:144 ~y:0 ~w:48 ~h:48)
                                ~dst:surface ~dst_rect:dst_rect ()
 ;   if w = 0
-    then Sdlvideo.blit_surface ~src:walls ~src_rect:(Sdlvideo.rect ~x:192 ~y:0 ~w:48 ~h:48)
+    then Sdlvideo.blit_surface ~src:walls   ~src_rect:(Sdlvideo.rect ~x:192 ~y:0 ~w:48 ~h:48)
                                ~dst:surface ~dst_rect:dst_rect ()
   end
 
 let render surface =
   for y = 0 to 20 do
     for x = 0 to 18 do
-      if Map.get_cell x y = 0
+      if Game.Tmap.get_cell (x, y) = 0
       then render_cell surface x y
     done
   done

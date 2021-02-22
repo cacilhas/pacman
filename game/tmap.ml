@@ -6,9 +6,9 @@ let map = String.concat ""
   ; "\x00\x33\x00\x00\x33\x00\x33\x00\x00\x00\x00\x00\x33\x00\x33\x00\x00\x33\x00"
   ; "\x00\x99\xCC\xCC\x77\x00\x99\xCC\x66\x00\xAA\xCC\x55\x00\xBB\xCC\xCC\x55\x00"
   ; "\x00\x00\x00\x00\x33\x00\x00\x00\x33\x00\x33\x00\x00\x00\x33\x00\x00\x00\x00"
-  ; "\x00\x00\x00\x00\x33\x00\xAA\xCC\xCD\xCC\xCD\xCC\xAA\x00\x33\x00\x00\x00\x00"
+  ; "\x00\x00\x00\x00\x33\x00\xAA\xCC\xCD\xCC\xCD\xCC\x66\x00\x33\x00\x00\x00\x00"
   ; "\x00\x00\x00\x00\x33\x00\x33\x00\x00\xD0\x00\x00\x33\x00\x33\x00\x00\x00\x00"
-  ; "\xCC\xCC\xCC\xCC\xFF\xCC\x77\x00\x40\xD0\x80\x00\xBB\xFF\xCC\xCC\xCC\xCC\xCC"
+  ; "\xCC\xCC\xCC\xCC\xFF\xCC\x77\x00\x40\xD0\x80\x00\xBB\xCC\xFF\xCC\xCC\xCC\xCC"
   ; "\x00\x00\x00\x00\x33\x00\x33\x00\x00\x00\x00\x00\x33\x00\x33\x00\x00\x00\x00"
   ; "\x00\x00\x00\x00\x33\x00\xBB\xCC\xCC\xCC\xCC\xCC\x77\x00\x33\x00\x00\x00\x00"
   ; "\x00\x00\x00\x00\x33\x00\x33\x00\x00\x00\x00\x00\x33\x00\x33\x00\x00\x00\x00"
@@ -28,13 +28,13 @@ let can_go c direction = match direction with
   | `LEFT  -> c land 4 != 0
   | `RIGHT -> c land 8 != 0
 
-let get_cell x y =
+let get_cell (x, y) =
   if x < 0 || x > 18 || y < 0 || y > 20
   then 255
   else int_of_char map.[y*19 + x]
 
-let at actor x y =
-  let cell = get_cell x y in
+let at actor position =
+  let cell = get_cell position in
   let cell = match actor with
     | `GHOST  -> cell lsr 4
     | `PACMAN -> cell land 15
@@ -50,24 +50,24 @@ let%test_unit "map should be enclosed" =
   for y = 0 to 20 do
     if y != 9
     then begin
-      let got = get_cell 0 y in
+      let got = get_cell (0, y) in
       if got != 0
       then Failure (Printf.sprintf "expected 0 at 0,%d, got %d" y got) |> raise
-    ; let got = get_cell 18 y in
+    ; let got = get_cell (18, y) in
       if got != 0
       then Failure (Printf.sprintf "expected 0 at 18,%d, got %d" y got) |> raise
     end
   done
 ; for x = 0 to 18 do
-  let got = get_cell x 0 in
+  let got = get_cell (x, 0) in
   if got != 0
   then Failure (Printf.sprintf "expected 0 at %d,0, got %d" x got) |> raise
-; let got = get_cell x 20 in
+; let got = get_cell (x, 20) in
   if got != 0
   then Failure (Printf.sprintf "expected 0 at %d,18, got %d" x got) |> raise
   done
 ; for x = 2 to 16 do
-    let got = get_cell x 19 in
+    let got = get_cell (x, 19) in
     if (x = 8 || x = 10) && got != 221
     then Failure (Printf.sprintf "expected 221 at %d,19, got %d" x got) |> raise
     else if (x != 8 && x != 10) && got != 204
@@ -75,7 +75,7 @@ let%test_unit "map should be enclosed" =
   done
 
 let%test "map should have two exits" =
-  (get_cell 0 9 = 204) && (get_cell 18 9 = 204)
+  (get_cell (0, 9) = 204) && (get_cell (18, 9) = 204)
 
 let%test "can_go up" =
   (not (can_go 0 `UP))
@@ -149,29 +149,29 @@ let%test "can_go right" =
   && (can_go 14 `RIGHT)
   && (can_go 15 `RIGHT)
 
-let%test "pacman at 1 1 should go left or down" =
-  let options = at `PACMAN 1 1 in
+let%test "pacman at 1, 1 should go left or down" =
+  let options = at `PACMAN (1, 1) in
   (List.mem `RIGHT options)
   && (List.mem `DOWN options)
   && (not (List.mem `UP options))
   && (not (List.mem `LEFT options))
 
-let%test "ghost at 1 1 should go left or down" =
-  let options = at `GHOST 1 1 in
+let%test "ghost at 1, 1 should go left or down" =
+  let options = at `GHOST (1, 1) in
   (List.mem `RIGHT options)
   && (List.mem `DOWN options)
   && (not (List.mem `UP options))
   && (not (List.mem `LEFT options))
 
-let%test "pacman at 8 7 should go left, right, or up" =
-  let options = at `PACMAN 8 7 in
+let%test "pacman at 8, 7 should go left, right, or up" =
+  let options = at `PACMAN (8, 7) in
   (List.mem `RIGHT options)
   && (List.mem `LEFT options)
   && (List.mem `UP options)
   && (not (List.mem `DOWN options))
 
-let%test "ghost at 8 7 should go left or right" =
-  let options = at `GHOST 8 7 in
+let%test "ghost at 8, 7 should go left or right" =
+  let options = at `GHOST (8, 7) in
   (List.mem `RIGHT options)
   && (List.mem `LEFT options)
   && (not (List.mem `UP options))
