@@ -53,6 +53,8 @@ let current_frame () =
 
 let go dir = Game.Pacman.go dir
 
+let going = Game.Pacman.moving
+
 let render_on surface =
   let (x, y) = Game.Pacman.xy `SCREEN in
   let dst_rect = Sdlvideo.rect ~x:x ~y:y ~w:48 ~h:48

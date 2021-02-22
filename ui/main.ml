@@ -33,6 +33,22 @@ end = struct
   ; blit_surface surface
 end
 
+module Audio : sig
+  val init  : unit -> unit
+  val close : unit -> unit
+  val wakka : unit -> Sdlmixer.chunk
+
+end = struct
+  let init () =
+    Sdlmixer.open_audio ()
+  ; Sdlmixer.setvolume_channel Sdlmixer.all_channels 0.8
+
+  let close () = Sdlmixer.close_audio ()
+
+  let lazy_wakka = lazy (Sdlmixer.load_string Wakka.data)
+  let wakka ()   = Lazy.force lazy_wakka
+end
+
 let running = ref true
 
 let update ticks = if ticks > 0
@@ -70,9 +86,21 @@ let rec loop board ticks last_tick =
 ; if !running
   then loop board (Sdltimer.get_ticks ()) ticks
 
+let rec play () =
+  begin
+    match Pacman.going () with
+      | `NONE -> ()
+      | _     -> Audio.wakka () |> Sdlmixer.play_channel ~loops:1
+  end
+; Thread.delay 0.5
+; if !running
+  then play ()
+
 let mainloop () =
   Sdl.init [`AUDIO; `EVENTTHREAD; `JOYSTICK; `TIMER; `VIDEO]
 ; at_exit Sdl.quit
+; Audio.init ()
+; at_exit Audio.close
 ; Sdlwm.set_caption ~title:"Kodumaro Pacman" ~icon:""
 ; Sdlevent.enable_events Sdlevent.all_events_mask
 ; Screen.std () |> ignore (* force screen to be created *)
@@ -84,4 +112,5 @@ let mainloop () =
               ~amask:Screen_info.amask
   in
   Thread.create handle_events () |> ignore
+; Thread.create play ()          |> ignore
 ; loop board (Sdltimer.get_ticks ()) 0
