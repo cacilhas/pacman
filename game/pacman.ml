@@ -30,7 +30,8 @@ let y tpe =
 let xy tpe = (x tpe, y tpe)
 
 let decide () =
-  let directions = Tmap.at `PACMAN !position in
+  Food.eat !position |> Globals.score |> ignore
+; let directions = Tmap.at `PACMAN !position in
   if Float.abs !offset < 20.0 && List.mem !required directions
   then begin
     going := (!required :> [`UP | `DOWN | `LEFT | `RIGHT | `NONE])

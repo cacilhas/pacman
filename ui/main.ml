@@ -15,8 +15,9 @@ end = struct
   let std ()      = Lazy.force lazy_screen
 
   let render_beige surface =
-    let beige = Sdlvideo.map_RGB surface (225, 211, 186) in
-    Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:410 ~y:402 ~w:96 ~h:12) surface beige
+    let beige = Sdlvideo.map_RGB surface (225, 211, 186)
+    and dst_rect = Sdlvideo.rect ~x:410 ~y:402 ~w:96 ~h:12 in
+    Sdlvideo.fill_rect ~rect:dst_rect surface beige
   ; Map_render.render_circle surface  8 8
   ; Map_render.render_circle surface 10 8
 
@@ -24,12 +25,14 @@ end = struct
     let info = Sdlvideo.surface_info (std ()) in
     let x = (info.w - width) / 2
     and y = (info.h - height) / 2 in
-    let rect = Sdlvideo.rect ~x:x ~y:y ~w:width ~h:height in
-    Sdlvideo.blit_surface ~src:surface ~dst:(std ()) ~dst_rect:rect ()
+    let dst_rect = Sdlvideo.rect ~x:x ~y:y ~w:width ~h:height in
+    Sdlvideo.blit_surface ~src:surface ~dst:(std ()) ~dst_rect:dst_rect ()
 
   let render surface =
     Map_render.render surface
   ; render_beige surface
+  ; Food_render.render surface
+  ; Pacman.render_on surface
   ; blit_surface surface
 end
 
@@ -41,7 +44,7 @@ module Audio : sig
 end = struct
   let init () =
     Sdlmixer.open_audio ()
-  ; Sdlmixer.setvolume_channel Sdlmixer.all_channels 0.8
+  ; Sdlmixer.setvolume_channel Sdlmixer.all_channels 0.6
 
   let close () = Sdlmixer.close_audio ()
 
@@ -55,6 +58,7 @@ let update ticks = if ticks > 0
   then begin
     let dt = (float_of_int ticks) /. 1000.0 in
     Pacman.update dt
+  ; Food_render.update dt
   end
 
 let handle_keypress sym = match sym with
@@ -79,7 +83,6 @@ let rec loop board ticks last_tick =
   Sdlvideo.map_RGB (Screen.std ()) Sdlvideo.black |> Sdlvideo.fill_rect (Screen.std ())
 ; Sdlvideo.map_RGB board Sdlvideo.black |> Sdlvideo.fill_rect board
 ; update (ticks - last_tick)
-; Pacman.render_on board
 ; Screen.render board
 ; Sdlvideo.flip (Screen.std ())
 ; Sdltimer.delay 33
