@@ -7,7 +7,7 @@ let left_right : [`LEFT | `RIGHT] ref                       = ref `LEFT
 
 let go dir = required := dir
 
-let pointing () = !left_right
+let looking () = !left_right
 
 let x tpe =
   let (sx, _) = !position in
@@ -30,7 +30,8 @@ let y tpe =
 let xy tpe = (x tpe, y tpe)
 
 let decide () =
-  Food.eat !position |> Globals.score |> ignore
+  let (x, y) = !position in
+  [Signal.Pair (x, y)] |> Signal.emit "gotta"
 ; let directions = Tmap.at `PACMAN !position in
   if Float.abs !offset < 20.0 && List.mem !required directions
   then begin

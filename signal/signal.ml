@@ -1,6 +1,7 @@
 type handle = int
 type arg = Float of float
          | Int of int
+         | Pair of int * int
          | String of string
 type callback = arg list -> unit
 
@@ -11,7 +12,7 @@ let next_handle () =
   |> List.fold_left max ~-1
   |> (+) 1
 
-let register signal cb =
+let connect signal cb =
   let id = next_handle () in
   handles := (id, (signal, cb)) :: !handles
 ; id
@@ -25,7 +26,7 @@ let emit signal args =
   List.filter_map (filter_signal signal) !handles
   |> List.iter (fun cb -> try (cb args) with e -> Printf.eprintf "%s" (Printexc.to_string e))
 
-let unregister signal id =
+let disconnect signal id =
   let (name, _) = get id in
   if name != signal
   then Failure (Printf.sprintf "signal %s doesn't match handle %d" signal id) |> raise

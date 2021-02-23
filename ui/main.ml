@@ -1,4 +1,5 @@
 module Screen : sig
+  val init   : unit -> unit
   val height : int
   val render : Sdlvideo.surface -> unit
   val resize : int * int -> Sdlvideo.surface
@@ -36,12 +37,17 @@ end = struct
   ; Game.Globals.score 0      |> Score_render.render surface (1, 0)
   ; Game.Globals.highscore () |> Score_render.render surface (15, 0)
   ; blit_surface surface
+
+  let init () =
+    Sdlwm.set_caption ~title:"Kodumaro Pacman" ~icon:""
+  ; Sdlevent.enable_events Sdlevent.all_events_mask
+  ; std () |> ignore (* force screen to be created *)
 end
 
 module Audio : sig
-  val init  : unit -> unit
-  val close : unit -> unit
-  val wakka : unit -> Sdlmixer.chunk
+  val init        : unit -> unit
+  val close       : unit -> unit
+  val play_scored : Signal.arg list -> unit
 
 end = struct
   let init () =
@@ -52,6 +58,10 @@ end = struct
 
   let lazy_wakka = lazy (Sdlmixer.load_string Wakka.data)
   let wakka ()   = Lazy.force lazy_wakka
+
+  let play_scored _ =
+    if not (Sdlmixer.playing_channel 1)
+    then wakka () |> Sdlmixer.play_channel ~channel:1 ~loops:1
 end
 
 let running = ref true
@@ -88,25 +98,23 @@ let rec loop board ticks last_tick =
 ; if !running
   then loop board (Sdltimer.get_ticks ()) ticks
 
-let play_scored (_ : Signal.arg list) =
-  if not (Sdlmixer.playing_channel 1)
-  then Audio.wakka () |> Sdlmixer.play_channel ~channel:1 ~loops:1
+let connect_handles () =
+  Signal.connect "scored" Audio.play_scored  |> ignore
+; Signal.connect "gotta"  Game.Food.eat      |> ignore
+; Signal.connect "update" Game.Pacman.update |> ignore
+; Signal.connect "update" Pacman.update      |> ignore
+; Signal.connect "update" Food_render.update |> ignore
 
-let register_update_functions () =
-  Signal.register "scored" play_scored        |> ignore
-; Signal.register "update" Game.Pacman.update |> ignore
-; Signal.register "update" Pacman.update      |> ignore
-; Signal.register "update" Food_render.update |> ignore
-
-let mainloop () =
-  Sdl.init [`AUDIO; `EVENTTHREAD; `JOYSTICK; `TIMER; `VIDEO]
+let start_sdl () =
+  Sdl.init [`AUDIO; `EVENTTHREAD; `TIMER; `VIDEO]
 ; at_exit Sdl.quit
 ; Audio.init ()
 ; at_exit Audio.close
-; Sdlwm.set_caption ~title:"Kodumaro Pacman" ~icon:""
-; Sdlevent.enable_events Sdlevent.all_events_mask
-; Screen.std () |> ignore (* force screen to be created *)
-; register_update_functions ()
+; Screen.init ()
+
+let mainloop () =
+  start_sdl ()
+; connect_handles ()
 ; let board = Sdlvideo.create_RGB_surface [`HWSURFACE]
               ~w:Screen.width ~h:Screen.height ~bpp:32
               ~rmask:Screen_info.rmask

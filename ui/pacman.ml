@@ -48,7 +48,7 @@ let current_frame () =
     | 3 -> 1
     | v -> v
   in
-  match Game.Pacman.pointing () with
+  match Game.Pacman.looking () with
     | `LEFT  -> Sdlvideo.rect ~x:(frame*48+144) ~y:0 ~w:48 ~h:48
     | `RIGHT -> Sdlvideo.rect ~x:(frame*48)     ~y:0 ~w:48 ~h:48
 
