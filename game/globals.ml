@@ -18,6 +18,11 @@ let score i =
 
 let highscore () = !the_hs * 10
 
+let collision = function
+  | [Signal.String st] -> if st = "frightened"
+                          then score 10 |> ignore
+  | _ -> ()
+
 let restart _ =
   the_speed := 200.0
 ; the_score := 0
