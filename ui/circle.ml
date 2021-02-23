@@ -37,6 +37,22 @@ let shade surface (x, y) xradius color =
   done
 
 
+let fill_semicircle surface ~x ~y ~radius color =
+  for degree = 0 to 90 do
+    let rad = (float_of_int degree) *. Float.pi /. 180.0
+    and radius = float_of_int radius in
+    let x0 = (cos (Float.pi +. rad)) *. radius
+    and y0 = (sin (Float.pi +. rad)) *. radius in
+    let sx = x + (int_of_float x0)
+    and sy = y + (int_of_float y0)
+    in
+    let wi = abs (sx - x) * 2
+    and hei = abs (sy - y) in
+    let rect = Sdlvideo.rect ~x:sx ~y:sy ~w:wi ~h:hei in
+    Sdlvideo.fill_rect ~rect:rect surface color
+  done
+
+
 let fill_circle surface ~x ~y ~radius color =
   for degree = 0 to 90 do
     let rad = (float_of_int degree) *. Float.pi /. 180.0

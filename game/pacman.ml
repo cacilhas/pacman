@@ -72,42 +72,35 @@ let fix_offset () =
   if !offset <= -48.0
   then begin
     if !going = `UP
-    then begin
-      position := (sx, sy - 1)
-    ; offset := !offset +. 48.0
-    end
+    then position := (sx, sy - 1)
     else begin
       position := (sx - 1, sy)
     ; fix_x ()
-    ; offset := !offset +. 48.0
     end
+  ; offset := !offset +. 48.0
   end
   else if !offset >= 48.0
   then begin
     if !going = `DOWN
-    then begin
-      position := (sx, sy + 1)
-    ; offset := !offset -. 48.00
-    end
+    then position := (sx, sy + 1)
     else begin
       position := (sx + 1, sy)
     ; fix_x ()
-    ; offset := !offset -. 48.00
     end
+  ; offset := !offset -. 48.00
   end
-  ; decide ()
+; decide ()
 
 let gonna () = !going
 
 let update = function
-  | [Signal.Float dt] ->
-    let speed = dt *. (Globals.speed ()) in
-    let speed = speed *. match !going with
-      | `UP   | `LEFT  -> -1.0
-      | `DOWN | `RIGHT -> 1.0
-      | `NONE          -> 0.0
-    in
-    offset := !offset +. speed
-  ; if speed != 0.0
-    then fix_offset ()
+  | [Signal.Float dt] -> let speed = dt *. (Globals.speed ()) in
+                         let speed = speed *. match !going with
+                           | `UP   | `LEFT  -> -1.0
+                           | `DOWN | `RIGHT -> 1.0
+                           | `NONE          -> 0.0
+                         in
+                         offset := !offset +. speed
+                       ; if speed != 0.0
+                         then fix_offset ()
   | _ -> ()

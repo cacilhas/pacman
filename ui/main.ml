@@ -34,7 +34,8 @@ end = struct
   ; render_beige surface
   ; Food_render.render surface
   ; Pacman.render_on surface
-  ; Game.Globals.score 0      |> Score_render.render surface (1, 0)
+  ; Ghost.render_on surface (Game.Blinky.xy `SCREEN) `BLINKY (Game.Blinky.status ()) (Game.Blinky.looking ())
+  ; Game.Globals.score 0 |> Score_render.render surface (1, 0)
   ; Game.Globals.highscore () |> Score_render.render surface (15, 0)
   ; blit_surface surface
 
@@ -102,7 +103,9 @@ let connect_handles () =
   Signal.connect "scored" Audio.play_scored  |> ignore
 ; Signal.connect "gotta"  Game.Food.eat      |> ignore
 ; Signal.connect "update" Game.Pacman.update |> ignore
+; Signal.connect "update" Game.Blinky.update |> ignore
 ; Signal.connect "update" Pacman.update      |> ignore
+; Signal.connect "update" Ghost.update       |> ignore
 ; Signal.connect "update" Food_render.update |> ignore
 
 let start_sdl () =
