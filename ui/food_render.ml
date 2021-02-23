@@ -35,13 +35,12 @@ let render_cell surface x y i =
                              ~dst:surface ~dst_rect:dst_rect ()
 
 let update = function
-  | [Signal.Float dt] ->
-    cycle := !cycle +. dt
-  ; if !cycle >= 0.25
-    then begin
-      cycle := !cycle -. 0.25
-    ; show := not !show
-    end
+  | [`Float dt] -> cycle := !cycle +. dt
+                 ; if !cycle >= 0.25
+                   then begin
+                     cycle := !cycle -. 0.25
+                   ; show := not !show
+                   end
   | _ -> ()
 
 let render surface =

@@ -7,13 +7,13 @@ let do_chstatus = function
   | None        -> ()
 
 let chstatus = function
-  | [Signal.String status] -> Ghost.status_of_string status |> do_chstatus
+  | [`String status] -> Ghost.status_of_string status |> do_chstatus
   | _ -> ()
 
 let restart _ = ghost#restart ()
 
 let update = function
-  | [Signal.Float dt] -> ghost#update dt
+  | [`Float dt] -> ghost#update dt
   | _ -> ()
 
 let looking () = ghost#looking

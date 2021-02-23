@@ -1,3 +1,9 @@
+type status = [ `CHASE
+              | `EATEN
+              | `FRIGHTENED
+              | `SCATTER
+              ]
+
 class ghost name scater_target chase_target = object (self)
 
   val mutable going_out = true
@@ -5,8 +11,8 @@ class ghost name scater_target chase_target = object (self)
   val mutable last_pos  = (7, 9)
   val mutable target    = (9, 7)
   val mutable offset    = 0.0
-  val mutable going      : [`UP | `DOWN | `LEFT | `RIGHT]             = `RIGHT
-  val mutable the_status : [`SCATTER | `FRIGHTENED | `EATEN | `CHASE] = `SCATTER
+  val mutable going      : Tmap.direction = `RIGHT
+  val mutable the_status : status         = `SCATTER
 
   val show_status = function
     | `SCATTER    -> "scatter"
@@ -153,7 +159,7 @@ class ghost name scater_target chase_target = object (self)
   method private check_colision () =
     if position = Pacman.xy `BOARD && the_status != `EATEN
     then begin
-      Signal.emit "collision" [Signal.String (show_status the_status)]
+      Signal.emit "collision" [`String (show_status the_status)]
     ; if the_status = `FRIGHTENED
       then self#chstatus `EATEN
     end

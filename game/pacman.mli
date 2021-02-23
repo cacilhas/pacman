@@ -2,8 +2,8 @@ val x  : [`BOARD | `SCREEN] -> int
 val y  : [`BOARD | `SCREEN] -> int
 val xy : [`BOARD | `SCREEN] -> int * int
 
-val go      : [`UP | `DOWN | `LEFT | `RIGHT] -> unit
-val gonna   : unit -> [`UP | `DOWN | `LEFT | `RIGHT | `NONE]
+val go      : Tmap.direction -> unit
+val gonna   : unit -> Tmap.nullable_direction
 val looking : unit -> [`LEFT | `RIGHT]
 
 (* Signals *)

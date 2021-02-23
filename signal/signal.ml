@@ -1,8 +1,9 @@
 type handle = int
-type arg = Float of float
-         | Int of int
-         | Pair of int * int
-         | String of string
+type arg = [ `Float of float
+           | `Int of int
+           | `Pair of int * int
+           | `String of string
+           ]
 type callback = arg list -> unit
 
 let handles : (handle * (string * callback)) list ref = ref []

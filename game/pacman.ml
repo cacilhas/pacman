@@ -1,9 +1,9 @@
 let position = ref (9, 15)
 let offset   = ref 0.0
 
-let going      : [`UP | `DOWN | `LEFT | `RIGHT | `NONE] ref = ref `NONE
-let required   : [`UP | `DOWN | `LEFT | `RIGHT] ref         = ref `UP
-let left_right : [`LEFT | `RIGHT] ref                       = ref `LEFT
+let going      : Tmap.nullable_direction ref = ref `NONE
+let required   : Tmap.direction ref          = ref `UP
+let left_right : [`LEFT | `RIGHT] ref        = ref `LEFT
 
 let go dir = required := dir
 
@@ -38,11 +38,11 @@ let xy tpe = (x tpe, y tpe)
 
 let decide () =
   let (x, y) = !position in
-  [Signal.Pair (x, y)] |> Signal.emit "gotta"
+  [`Pair (x, y)] |> Signal.emit "gotta"
 ; let directions = Tmap.at `PACMAN !position in
   if Float.abs !offset < 20.0 && List.mem !required directions
   then begin
-    going := (!required :> [`UP | `DOWN | `LEFT | `RIGHT | `NONE])
+    going := (!required :> Tmap.nullable_direction)
   ; if !going = `LEFT
     then left_right := `LEFT
     else if !going = `RIGHT
@@ -101,18 +101,18 @@ let fix_offset () =
 let gonna () = !going
 
 let collision = function
-  | [Signal.String st] -> if st != "frightened"
-                          then Signal.emit "restart" []
+  | [`String st] -> if st != "frightened"
+                    then Signal.emit "restart" []
   | _ -> ()
 
 let update = function
-  | [Signal.Float dt] -> let speed = dt *. (Globals.speed ()) in
-                         let speed = speed *. match !going with
-                           | `UP   | `LEFT  -> -1.0
-                           | `DOWN | `RIGHT -> 1.0
-                           | `NONE          -> 0.0
-                         in
-                         offset := !offset +. speed
-                       ; if speed != 0.0
-                         then fix_offset ()
+  | [`Float dt] -> let speed = dt *. (Globals.speed ()) in
+                   let speed = speed *. match !going with
+                     | `UP   | `LEFT  -> -1.0
+                     | `DOWN | `RIGHT -> 1.0
+                     | `NONE          -> 0.0
+                   in
+                   offset := !offset +. speed
+                 ; if speed != 0.0
+                   then fix_offset ()
   | _ -> ()

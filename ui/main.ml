@@ -69,7 +69,7 @@ let running = ref true
 
 let update ticks = if ticks > 0
   then let dt = (float_of_int ticks) /. 1000.0 in
-       Signal.emit "update" [Signal.Float dt]
+       Signal.emit "update" [`Float dt]
 
 let handle_keypress sym = match sym with
   | Sdlkey.KEY_ESCAPE -> running := false

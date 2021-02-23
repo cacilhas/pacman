@@ -10,7 +10,7 @@ let score i =
       | 0 -> ()
       | 3 -> the_score := !the_score + 5
       | v -> incr the_score
-           ; Signal.emit "scored" [Int v]
+           ; Signal.emit "scored" [`Int v]
   end
 ; if !the_score > !the_hs
   then the_hs := !the_score
@@ -19,12 +19,12 @@ let score i =
 let highscore () = !the_hs * 10
 
 let collision = function
-  | [Signal.String st] -> if st = "frightened"
-                          then score 10 |> ignore
+  | [`String st] -> if st = "frightened"
+                    then score 10 |> ignore
   | _ -> ()
 
 let scored = function
-  | [Signal.Int 2] -> Signal.emit "chstatus" [Signal.String "frightened"]
+  | [`Int 2] -> Signal.emit "chstatus" [`String "frightened"]
   | _ -> ()
 
 let restart _ =

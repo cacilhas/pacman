@@ -32,8 +32,8 @@ let index_of_xy x y =
 let get_cell (x, y) = int_of_char map.(index_of_xy x y)
 
 let eat = function
-  | [Signal.Pair (x, y)] -> get_cell (x, y) |> Globals.score |> ignore
-                          ; map.(index_of_xy x y) <- '\x00'
+  | [`Pair (x, y)] -> get_cell (x, y) |> Globals.score |> ignore
+                    ; map.(index_of_xy x y) <- '\x00'
   | _ -> ()
 
 let restart _ =

@@ -1,5 +1,5 @@
-val looking  : unit -> [`UP | `DOWN | `LEFT | `RIGHT]
-val status   : unit -> [`SCATTER | `FRIGHTENED | `EATEN | `CHASE]
+val looking  : unit -> Tmap.direction
+val status   : unit -> Ghost.status
 val xy       : [`BOARD | `SCREEN] -> int * int
 
 (* Signals *)

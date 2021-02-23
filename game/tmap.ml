@@ -22,6 +22,19 @@ let map = String.concat ""
   ; "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
   ]
 
+type direction = [ `UP
+                 | `DOWN
+                 | `LEFT
+                 | `RIGHT
+                 ]
+
+type nullable_direction = [ `NONE
+                          | `UP
+                          | `DOWN
+                          | `LEFT
+                          | `RIGHT
+                          ]
+
 let int_of_up    = 1
 let int_of_down  = 2
 let int_of_left  = 4
