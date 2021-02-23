@@ -29,18 +29,10 @@ let frames =
   ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(i*48+1) ~y:168 ~w:46 ~h:18) surface clyde
   ; Circle.fill_circle surface ~x:(i*48+12) ~y:166 ~radius:10 white
   ; Circle.fill_circle surface ~x:(i*48+36) ~y:166 ~radius:10 white
-  ; Circle.fill_circle surface ~x:(i*48+12) ~y:214 ~radius:10 white
-  ; Circle.fill_circle surface ~x:(i*48+36) ~y:214 ~radius:10 white
-  done
-; for i = 0 to 3 do (* frightened *)
-    Circle.fill_semicircle surface ~x:(i*48+24) ~y:240 ~radius:24 white
-  ; Circle.fill_semicircle surface ~x:(i*48+24) ~y:240 ~radius:23 blue
-  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(i*48)   ~y:240 ~w:48 ~h:18) surface white
-  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(i*48+1) ~y:240 ~w:48 ~h:18) surface blue
-  ; let x = i*48 + 6 + (i mod 2)*6
-    and y = 262 + ((i+1) mod 2)*6 in
-    Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:x      ~y:y ~w:6 ~h:6) surface white
-  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(x+24) ~y:y ~w:6 ~h:6) surface white
+  ; Circle.fill_semicircle surface ~x:(i*48+24) ~y:264 ~radius:23 blue
+  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(i*48+1) ~y:264 ~w:46 ~h:18) surface blue
+  ; Circle.fill_circle surface ~x:(i*48+12) ~y:262 ~radius:10 white
+  ; Circle.fill_circle surface ~x:(i*48+36) ~y:262 ~radius:10 white
   done
 ; for i = 0 to 3 do (* eyes *)
     Circle.fill_circle surface ~x:6   ~y:(i*48+16) ~radius:6 blue
@@ -116,6 +108,22 @@ let frames =
 ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:162 ~y:186 ~w:6 ~h:5) surface clyde
 ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:174 ~y:186 ~w:6 ~h:5) surface clyde
 ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:186 ~y:186 ~w:5 ~h:5) surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0   ~y:282 ~w:6 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:12  ~y:282 ~w:6 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:24  ~y:282 ~w:6 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:36  ~y:282 ~w:5 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:55  ~y:282 ~w:6 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:66  ~y:282 ~w:6 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:78  ~y:282 ~w:6 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:90  ~y:282 ~w:5 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:282 ~w:6 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:108 ~y:282 ~w:6 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:120 ~y:282 ~w:6 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:132 ~y:282 ~w:5 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:150 ~y:282 ~w:6 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:162 ~y:282 ~w:6 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:174 ~y:282 ~w:6 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:186 ~y:282 ~w:5 ~h:5) surface blue
   (* LEFT *)
 ; Circle.fill_circle surface ~x:6  ~y:214 ~radius:6 blue
 ; Circle.fill_circle surface ~x:30 ~y:214 ~radius:6 blue
@@ -155,8 +163,9 @@ let current_frame i whereto =
   Sdlvideo.rect ~x:x ~y:y ~w:48 ~h:48
 
 let frame_grp who how =
-  (* TODO: `FRIGHTENED *)
   if how = `EATEN
+  then 4
+  else if how = `FRIGHTENED
   then 5
   else
   match who with

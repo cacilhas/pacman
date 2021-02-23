@@ -107,7 +107,6 @@ let connect_handles () =
 ; Signal.connect "update"   Ghost.update         |> ignore
 
 (* Pacman *)
-; Signal.connect "collision" Game.Pacman.collision |> ignore
 ; Signal.connect "gotta"     Game.Food.eat         |> ignore
 ; Signal.connect "restart"   Game.Pacman.restart   |> ignore
 ; Signal.connect "update"    Game.Pacman.update    |> ignore

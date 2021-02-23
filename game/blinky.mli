@@ -1,5 +1,5 @@
 val looking  : unit -> Tmap.direction
-val status   : unit -> Ghost.status
+val status   : unit -> Globals.status
 val xy       : [`BOARD | `SCREEN] -> int * int
 
 (* Signals *)

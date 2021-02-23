@@ -1,30 +1,21 @@
-type status = [ `CHASE
-              | `EATEN
-              | `FRIGHTENED
-              | `SCATTER
-              ]
+let home    = (8, 9)
+let outside = (9, 7)
 
 class ghost name scater_target chase_target = object (self)
 
   val mutable going_out = true
-  val mutable position  = (8, 9)
-  val mutable last_pos  = (7, 9)
-  val mutable target    = (9, 7)
+  val mutable position  = home
+  val mutable last_pos  = (fst home - 1, snd home)
+  val mutable target    = outside
   val mutable offset    = 0.0
   val mutable going      : Tmap.direction = `RIGHT
-  val mutable the_status : status         = `SCATTER
-
-  val show_status = function
-    | `SCATTER    -> "scatter"
-    | `FRIGHTENED -> "frightened"
-    | `EATEN      -> "eaten"
-    | `CHASE      -> "chase"
+  val mutable the_status : Globals.status = `SCATTER
 
   method restart () =
     going_out  <- true
-  ; position   <- (8, 9)
-  ; last_pos   <- (7, 9)
-  ; target     <- (9, 7)
+  ; position   <- home
+  ; last_pos   <- (fst home - 1, snd home)
+  ; target     <- outside
   ; offset     <- 0.0
   ; going      <- `RIGHT
   ; the_status <- `SCATTER
@@ -89,18 +80,18 @@ class ghost name scater_target chase_target = object (self)
     dx*dx + dy*dy
 
   method private gohome () =
-    if position = (8, 9)
+    if position = home
     then begin
       self#chstatus `CHASE
     ; going_out <- true
-    ; target <- (9, 7)
+    ; target <- outside
     end
-    else if position = (9, 7)
-    then target <- (8, 9)
+    else if position = outside
+    then target <- home
     else begin
       let (x, y) = position in
       if y < 7 || y > 9 || x < 8 || x > 10
-      then target <- (9, 7)
+      then target <- outside
     end
 
   method private update_target () =
@@ -159,7 +150,7 @@ class ghost name scater_target chase_target = object (self)
   method private check_colision () =
     if position = Pacman.xy `BOARD && the_status != `EATEN
     then begin
-      Signal.emit "collision" [`String (show_status the_status)]
+      Signal.emit "collision" [`String (Globals.string_of_status the_status)]
     ; if the_status = `FRIGHTENED
       then self#chstatus `EATEN
     end
@@ -188,16 +179,3 @@ class ghost name scater_target chase_target = object (self)
   ; self#fix_offset ()
   ; self#check_colision ()
 end
-
-let status_of_string = function
-  | "scatter"    -> Some `SCATTER
-  | "frightened" -> Some `FRIGHTENED
-  | "eaten"      -> Some `EATEN
-  | "chase"      -> Some `CHASE
-  | _            -> None
-
-let string_of_status = function
-  | `SCATTER    -> "scatter"
-  | `FRIGHTENED -> "frightened"
-  | `EATEN      -> "eaten"
-  | `CHASE      -> "chase"

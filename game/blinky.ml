@@ -7,8 +7,8 @@ let do_chstatus = function
   | None        -> ()
 
 let chstatus = function
-  | [`String status] -> Ghost.status_of_string status |> do_chstatus
-  | _ -> ()
+  | [`String status] -> do_chstatus (Globals.status_of_string status)
+  | _                -> ()
 
 let restart _ = ghost#restart ()
 

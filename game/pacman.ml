@@ -100,11 +100,6 @@ let fix_offset () =
 
 let gonna () = !going
 
-let collision = function
-  | [`String st] -> if st != "frightened"
-                    then Signal.emit "restart" []
-  | _ -> ()
-
 let update = function
   | [`Float dt] -> let speed = dt *. (Globals.speed ()) in
                    let speed = speed *. match !going with
