@@ -182,3 +182,16 @@ class ghost name scater_target chase_target = object (self)
   ; self#fix_offset ()
   ; self#check_colision ()
 end
+
+let status_of_string = function
+  | "scatter"    -> Some `SCATTER
+  | "frightened" -> Some `FRIGHTENED
+  | "eaten"      -> Some `EATEN
+  | "chase"      -> Some `CHASE
+  | _            -> None
+
+let string_of_status = function
+  | `SCATTER    -> "scatter"
+  | `FRIGHTENED -> "frightened"
+  | `EATEN      -> "eaten"
+  | `CHASE      -> "chase"

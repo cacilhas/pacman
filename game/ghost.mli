@@ -10,3 +10,6 @@ class ghost : string -> int * int -> (unit -> int * int) -> object
   method y        : [`BOARD | `SCREEN] -> int
   method xy       : [`BOARD | `SCREEN] -> int * int
 end
+
+val status_of_string : string -> [`SCATTER | `FRIGHTENED | `EATEN | `CHASE] option
+val string_of_status : [`SCATTER | `FRIGHTENED | `EATEN | `CHASE] -> string

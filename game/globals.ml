@@ -23,6 +23,10 @@ let collision = function
                           then score 10 |> ignore
   | _ -> ()
 
+let scored = function
+  | [Signal.Int 2] -> Signal.emit "chstatus" [Signal.String "frightened"]
+  | _ -> ()
+
 let restart _ =
   the_speed := 200.0
 ; the_score := 0

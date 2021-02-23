@@ -3,4 +3,6 @@ val score     : int -> int
 val speed     : unit -> float
 
 (* Signals *)
-val restart : Signal.arg list -> unit
+val collision : Signal.arg list -> unit
+val restart   : Signal.arg list -> unit
+val scored    : Signal.arg list -> unit

@@ -3,14 +3,11 @@ let chase_target () = Pacman.xy `BOARD
 let ghost = new Ghost.ghost "blinky" (16, -1) chase_target
 
 let do_chstatus = function
-  | "scatter"    -> ghost#chstatus `SCATTER
-  | "frightened" -> ghost#chstatus `FRIGHTENED
-  | "eaten"      -> ghost#chstatus `EATEN
-  | "chase"      -> ghost#chstatus `CHASE
-  | _            -> ()
+  | Some status -> ghost#chstatus status
+  | None        -> ()
 
 let chstatus = function
-  | [Signal.String status] -> do_chstatus status
+  | [Signal.String status] -> Ghost.status_of_string status |> do_chstatus
   | _ -> ()
 
 let restart _ = ghost#restart ()
