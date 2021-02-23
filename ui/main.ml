@@ -92,11 +92,8 @@ let rec loop board ticks last_tick =
   then loop board (Sdltimer.get_ticks ()) ticks
 
 let rec play () =
-  begin
-    match Pacman.going () with
-      | `NONE -> ()
-      | _     -> Audio.wakka () |> Sdlmixer.play_channel ~loops:1
-  end
+  if Game.Globals.scored ()
+  then Audio.wakka () |> Sdlmixer.play_channel ~loops:1
 ; Thread.delay 0.4
 ; if !running
   then play ()

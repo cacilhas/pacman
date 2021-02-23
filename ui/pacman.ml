@@ -53,7 +53,7 @@ let current_frame () =
 
 let go dir = Game.Pacman.go dir
 
-let going = Game.Pacman.moving
+let gonna = Game.Pacman.gonna
 
 let render_on surface =
   let (x, y) = Game.Pacman.xy `SCREEN in

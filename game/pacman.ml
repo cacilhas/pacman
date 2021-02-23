@@ -96,7 +96,7 @@ let fix_offset () =
   end
   ; decide ()
 
-let moving () = !going
+let gonna () = !going
 
 let update dt =
   let speed = dt *. (Globals.speed ()) in
