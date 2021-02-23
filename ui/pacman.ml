@@ -33,14 +33,15 @@ let frames =
 let cur_i = ref 0
 let acc   = ref 0.0
 
-let update dt =
-  Game.Pacman.update dt
-; acc := !acc +. dt
-; if !acc >= 0.1
-  then begin
-    acc := !acc -. 0.1
-  ; cur_i := (succ !cur_i) mod 4
-  end
+let update = function
+  | [Signal.Float dt] ->
+    acc := !acc +. dt
+  ; if !acc >= 0.1
+    then begin
+      acc := !acc -. 0.1
+    ; cur_i := (succ !cur_i) mod 4
+    end
+  | _ -> ()
 
 let current_frame () =
   let frame = match !cur_i with

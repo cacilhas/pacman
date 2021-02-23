@@ -46,7 +46,7 @@ module Audio : sig
 end = struct
   let init () =
     Sdlmixer.open_audio ()
-  ; Sdlmixer.setvolume_channel Sdlmixer.all_channels 0.6
+  ; Sdlmixer.setvolume_channel 1 0.6
 
   let close () = Sdlmixer.close_audio ()
 
@@ -57,11 +57,8 @@ end
 let running = ref true
 
 let update ticks = if ticks > 0
-  then begin
-    let dt = (float_of_int ticks) /. 1000.0 in
-    Pacman.update dt
-  ; Food_render.update dt
-  end
+  then let dt = (float_of_int ticks) /. 1000.0 in
+       Signal.emit "update" [Signal.Float dt]
 
 let handle_keypress sym = match sym with
   | Sdlkey.KEY_ESCAPE -> running := false
@@ -74,7 +71,7 @@ let handle_keypress sym = match sym with
 
 let rec handle_events () =
   begin
-    match Sdlevent.wait_event() with
+    match Sdlevent.wait_event () with
       | Sdlevent.KEYDOWN evt        -> handle_keypress evt.keysym
       | Sdlevent.VIDEORESIZE (w, h) -> assert (Screen.std () = Screen.resize (w, h))
       | _                           -> ()
@@ -91,12 +88,15 @@ let rec loop board ticks last_tick =
 ; if !running
   then loop board (Sdltimer.get_ticks ()) ticks
 
-let rec play () =
-  if Game.Globals.scored ()
-  then Audio.wakka () |> Sdlmixer.play_channel ~loops:1
-; Thread.delay 0.4
-; if !running
-  then play ()
+let play_scored (_ : Signal.arg list) =
+  if not (Sdlmixer.playing_channel 1)
+  then Audio.wakka () |> Sdlmixer.play_channel ~channel:1 ~loops:1
+
+let register_update_functions () =
+  Signal.register "scored" play_scored        |> ignore
+; Signal.register "update" Game.Pacman.update |> ignore
+; Signal.register "update" Pacman.update      |> ignore
+; Signal.register "update" Food_render.update |> ignore
 
 let mainloop () =
   Sdl.init [`AUDIO; `EVENTTHREAD; `JOYSTICK; `TIMER; `VIDEO]
@@ -106,6 +106,7 @@ let mainloop () =
 ; Sdlwm.set_caption ~title:"Kodumaro Pacman" ~icon:""
 ; Sdlevent.enable_events Sdlevent.all_events_mask
 ; Screen.std () |> ignore (* force screen to be created *)
+; register_update_functions ()
 ; let board = Sdlvideo.create_RGB_surface [`HWSURFACE]
               ~w:Screen.width ~h:Screen.height ~bpp:32
               ~rmask:Screen_info.rmask
@@ -114,5 +115,4 @@ let mainloop () =
               ~amask:Screen_info.amask
   in
   Thread.create handle_events () |> ignore
-; Thread.create play ()          |> ignore
 ; loop board (Sdltimer.get_ticks ()) 0

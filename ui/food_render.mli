@@ -1,2 +1,2 @@
 val render : Sdlvideo.surface -> unit
-val update : float -> unit
+val update : Signal.arg list -> unit

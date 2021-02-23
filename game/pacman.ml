@@ -98,13 +98,15 @@ let fix_offset () =
 
 let gonna () = !going
 
-let update dt =
-  let speed = dt *. (Globals.speed ()) in
-  let speed = speed *. match !going with
-    | `UP   | `LEFT  -> -1.0
-    | `DOWN | `RIGHT -> 1.0
-    | `NONE          -> 0.0
-  in
-  offset := !offset +. speed
-; if speed != 0.0
-  then fix_offset ()
+let update = function
+  | [Signal.Float dt] ->
+    let speed = dt *. (Globals.speed ()) in
+    let speed = speed *. match !going with
+      | `UP   | `LEFT  -> -1.0
+      | `DOWN | `RIGHT -> 1.0
+      | `NONE          -> 0.0
+    in
+    offset := !offset +. speed
+  ; if speed != 0.0
+    then fix_offset ()
+  | _ -> ()

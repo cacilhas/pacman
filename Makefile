@@ -6,7 +6,7 @@ RM= rm -f
 NAME= kodumaro-pacman
 PREFIX?= $(HOME)/.local
 INSTALL_EXE= $(PREFIX)/bin/$(NAME)
-SOURCES= bin/* game/* ui/*
+SOURCES= bin/* game/* signal/* ui/*
 TARGET= _build/default/bin/pacman.exe
 
 

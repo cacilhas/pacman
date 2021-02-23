@@ -34,13 +34,15 @@ let render_cell surface x y i =
        Sdlvideo.blit_surface ~src:cells   ~src_rect:src_rect
                              ~dst:surface ~dst_rect:dst_rect ()
 
-let update dt =
-  cycle := !cycle +. dt
-; if !cycle >= 0.25
-  then begin
-    cycle := !cycle -. 0.25
-  ; show := not !show
-  end
+let update = function
+  | [Signal.Float dt] ->
+    cycle := !cycle +. dt
+  ; if !cycle >= 0.25
+    then begin
+      cycle := !cycle -. 0.25
+    ; show := not !show
+    end
+  | _ -> ()
 
 let render surface =
   for y = 0 to 20 do
