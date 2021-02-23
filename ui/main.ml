@@ -33,6 +33,8 @@ end = struct
   ; render_beige surface
   ; Food_render.render surface
   ; Pacman.render_on surface
+  ; Game.Globals.score 0      |> Score_render.render surface (1, 0)
+  ; Game.Globals.highscore () |> Score_render.render surface (15, 0)
   ; blit_surface surface
 end
 
