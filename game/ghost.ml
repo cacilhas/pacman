@@ -14,6 +14,15 @@ class ghost name scater_target chase_target = object (self)
     | `EATEN      -> "eaten"
     | `CHASE      -> "chase"
 
+  method restart () =
+    going_out  <- true
+  ; position   <- (8, 9)
+  ; last_pos   <- (7, 9)
+  ; target     <- (9, 7)
+  ; offset     <- 0.0
+  ; going      <- `RIGHT
+  ; the_status <- `SCATTER
+
   method name : string = name
 
   method looking = going
@@ -142,8 +151,12 @@ class ghost name scater_target chase_target = object (self)
     end
 
   method private check_colision () =
-    if position = Pacman.xy `BOARD
-    then Signal.emit "collision" [Signal.String (show_status the_status)]
+    if position = Pacman.xy `BOARD && the_status != `EATEN
+    then begin
+      Signal.emit "collision" [Signal.String (show_status the_status)]
+    ; if the_status = `FRIGHTENED
+      then self#chstatus `EATEN
+    end
 
   method private turnback () =
     going <- self#back

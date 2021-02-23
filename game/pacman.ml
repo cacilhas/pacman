@@ -9,6 +9,13 @@ let go dir = required := dir
 
 let looking () = !left_right
 
+let restart _ =
+  position   := (9, 15)
+; offset     := 0.0
+; going      := `NONE
+; required   := `UP
+; left_right := `LEFT
+
 let x tpe =
   let (sx, _) = !position in
   match tpe with
@@ -92,6 +99,11 @@ let fix_offset () =
 ; decide ()
 
 let gonna () = !going
+
+let collision = function
+  | [Signal.String st] -> if st != "frightened"
+                          then Signal.emit "restart" []
+  | _ -> ()
 
 let update = function
   | [Signal.Float dt] -> let speed = dt *. (Globals.speed ()) in

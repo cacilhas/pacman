@@ -100,13 +100,18 @@ let rec loop board ticks last_tick =
   then loop board (Sdltimer.get_ticks ()) ticks
 
 let connect_handles () =
-  Signal.connect "scored" Audio.play_scored  |> ignore
-; Signal.connect "gotta"  Game.Food.eat      |> ignore
-; Signal.connect "update" Game.Pacman.update |> ignore
-; Signal.connect "update" Game.Blinky.update |> ignore
-; Signal.connect "update" Pacman.update      |> ignore
-; Signal.connect "update" Ghost.update       |> ignore
-; Signal.connect "update" Food_render.update |> ignore
+  Signal.connect "collision" Game.Pacman.collision    |> ignore
+; Signal.connect "gotta"     Game.Food.eat            |> ignore
+; Signal.connect "restart"   Game.Blinky.restart      |> ignore
+; Signal.connect "restart"   Game.Globals.restart     |> ignore
+; Signal.connect "restart"   Game.Food.restart        |> ignore
+; Signal.connect "restart"   Game.Pacman.restart      |> ignore
+; Signal.connect "scored"    Audio.play_scored        |> ignore
+; Signal.connect "update"    Game.Pacman.update       |> ignore
+; Signal.connect "update"    Game.Blinky.update       |> ignore
+; Signal.connect "update"    Pacman.update            |> ignore
+; Signal.connect "update"    Ghost.update             |> ignore
+; Signal.connect "update"    Food_render.update       |> ignore
 
 let start_sdl () =
   Sdl.init [`AUDIO; `EVENTTHREAD; `TIMER; `VIDEO]

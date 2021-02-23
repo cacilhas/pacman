@@ -17,3 +17,7 @@ let score i =
 ; !the_score * 10
 
 let highscore () = !the_hs * 10
+
+let restart _ =
+  the_speed := 200.0
+; the_score := 0

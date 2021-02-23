@@ -13,6 +13,8 @@ let chstatus = function
   | [Signal.String status] -> do_chstatus status
   | _ -> ()
 
+let restart _ = ghost#restart ()
+
 let update = function
   | [Signal.Float dt] -> ghost#update dt
   | _ -> ()

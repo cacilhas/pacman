@@ -36,7 +36,7 @@ let eat = function
                           ; map.(index_of_xy x y) <- '\x00'
   | _ -> ()
 
-let init () =
+let restart _ =
   String.iteri (fun i c -> map.(i) <- c) base
 
-let () = init ()
+let () = restart []
