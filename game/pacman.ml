@@ -1,143 +1,135 @@
-class pacman = object (self)
+type pacman = {
+  mutable position : int * int
+; mutable offset   : float
+; mutable going    : Tmap.nullable_direction
+; mutable required : Tmap.direction
+; mutable lateral  : [`LEFT | `RIGHT]
+}
 
-  val mutable position = (0, 0)
-  val mutable offset   = 0.0
-  val mutable going    : Tmap.nullable_direction = `NONE
-  val mutable required : Tmap.direction          = `UP
-  val mutable lateral  : [`LEFT | `RIGHT]        = `LEFT
+let attrs = {
+  position = (0, 0)
+; offset   = 0.0
+; going    = `NONE
+; required = `UP
+; lateral  = `LEFT
+}
 
-  method position = position
+let get_x (tpe : [`BOARD | `SCREEN]) =
+  let (sx, _) = attrs.position in
+  match tpe with
+    | `BOARD  -> sx
+    | `SCREEN -> sx*48 +
+                if attrs.going = `LEFT || attrs.going = `RIGHT
+                then int_of_float attrs.offset
+                else 0
 
-  method restart () =
-    position <- (9, 15)
-  ; offset   <- 0.0
-  ; going    <- `NONE
-  ; required <- `UP
-  ; lateral  <- `LEFT
+let get_y (tpe : [`BOARD | `SCREEN]) =
+  let (_, sy) = attrs.position in
+  match tpe with
+    | `BOARD  -> sy
+    | `SCREEN -> sy*48 +
+                if attrs.going = `UP || attrs.going = `DOWN
+                then int_of_float attrs.offset
+                else 0
 
-  initializer self#restart ()
+let xy tpe = (get_x tpe, get_y tpe)
 
-  method go dir = required <- dir
+let decide () =
+  let (x, y) = attrs.position in
+  [`Pair (x, y)] |> Signal.emit "gotta"
+; let directions = Tmap.at `PACMAN attrs.position in
+  if Float.abs attrs.offset < 20.0 && List.mem attrs.required directions
+  then begin
+    attrs.going <- (attrs.required :> Tmap.nullable_direction)
+  ; if attrs.going = `LEFT
+    then attrs.lateral <- `LEFT
+    else if attrs.going = `RIGHT
+    then attrs.lateral <- `RIGHT
+  end
+  else match attrs.going with
+    | `NONE  -> ()
+    | `UP    -> if not (List.mem `UP directions)
+                then attrs.going <- `NONE
+    | `DOWN  -> if not (List.mem `DOWN directions)
+                then attrs.going <- `NONE
+    | `LEFT  -> attrs.lateral <- `LEFT
+              ; if not (List.mem `LEFT directions)
+                then attrs.going <- `NONE
+    | `RIGHT -> attrs.lateral <- `RIGHT
+              ; if not (List.mem `RIGHT directions)
+                then attrs.going <- `NONE
 
-  method looking = lateral
+let fix_x () =
+  let sx = get_x `BOARD in
+  if sx < -1
+  then begin
+    attrs.position <- (21 + sx, 9) (* MAGIC NUMBER, see map.ml *)
+  ; attrs.going <- `LEFT
+  end
+  else if sx > 21
+  then begin
+    attrs.position <- (21 - sx, 9) (* MAGIC NUMBER, see map.ml *)
+  ; attrs.going <- `RIGHT
+  end
 
-  method x (tpe : [`BOARD | `SCREEN]) =
-    let (sx, _) = position in
-    match tpe with
-      | `BOARD  -> sx
-      | `SCREEN -> sx*48 +
-                  if going = `LEFT || going = `RIGHT
-                  then int_of_float offset
-                  else 0
-
-  method y (tpe : [`BOARD | `SCREEN]) =
-    let (_, sy) = position in
-    match tpe with
-      | `BOARD  -> sy
-      | `SCREEN -> sy*48 +
-                  if going = `UP || going = `DOWN
-                  then int_of_float offset
-                  else 0
-
-  method private decide () =
-    let (x, y) = position in
-    [`Pair (x, y)] |> Signal.emit "gotta"
-  ; let directions = Tmap.at `PACMAN position in
-    if Float.abs offset < 20.0 && List.mem required directions
-    then begin
-      going <- (required :> Tmap.nullable_direction)
-    ; if going = `LEFT
-      then lateral <- `LEFT
-      else if going = `RIGHT
-      then lateral <- `RIGHT
+let fix_offset () =
+  let sx = get_x `BOARD
+  and sy = get_y `BOARD in
+  if attrs.offset <= -48.0
+  then begin
+    if attrs.going = `UP
+    then attrs.position <- (sx, sy - 1)
+    else begin
+      attrs.position <- (sx - 1, sy)
+    ; fix_x ()
     end
-    else match going with
-      | `NONE  -> ()
-      | `UP    -> if not (List.mem `UP directions)
-                  then going <- `NONE
-      | `DOWN  -> if not (List.mem `DOWN directions)
-                  then going <- `NONE
-      | `LEFT  -> lateral <- `LEFT
-                ; if not (List.mem `LEFT directions)
-                  then going <- `NONE
-      | `RIGHT -> lateral <- `RIGHT
-                ; if not (List.mem `RIGHT directions)
-                  then going <- `NONE
-
-  method private fix_x () =
-    let sx = self#x `BOARD in
-    if sx < -1
-    then begin
-      position <- (21 + sx, 9) (* MAGIC NUMBER, see map.ml *)
-    ; going <- `LEFT
+  ; attrs.offset <- attrs.offset +. 48.0
+  end
+  else if attrs.offset >= 48.0
+  then begin
+    if attrs.going = `DOWN
+    then attrs.position <- (sx, sy + 1)
+    else begin
+      attrs.position <- (sx + 1, sy)
+    ; fix_x ()
     end
-    else if sx > 21
-    then begin
-      position <- (21 - sx, 9) (* MAGIC NUMBER, see map.ml *)
-    ; going <- `RIGHT
-    end
+  ; attrs.offset <- attrs.offset -. 48.00
+  end
+; decide ()
 
-  method private fix_offset () =
-    let sx = self#x `BOARD
-    and sy = self#y `BOARD in
-    if offset <= -48.0
-    then begin
-      if going = `UP
-      then position <- (sx, sy - 1)
-      else begin
-        position <- (sx - 1, sy)
-      ; self#fix_x ()
-      end
-    ; offset <- offset +. 48.0
-    end
-    else if offset >= 48.0
-    then begin
-      if going = `DOWN
-      then position <- (sx, sy + 1)
-      else begin
-        position <- (sx + 1, sy)
-      ; self#fix_x ()
-      end
-    ; offset <- offset -. 48.00
-    end
-  ; self#decide ()
+let gonna () = match attrs.going with
+  | `NONE  -> (attrs.lateral :> Tmap.direction)
+  | `LEFT  -> `LEFT
+  | `RIGHT -> `RIGHT
+  | `UP    -> `UP
+  | `DOWN  -> `DOWN
 
-  method gonna = match going with
-    | `NONE  -> (lateral :> Tmap.direction)
-    | `LEFT  -> `LEFT
-    | `RIGHT -> `RIGHT
-    | `UP    -> `UP
-    | `DOWN  -> `DOWN
+let go dir = attrs.required <- dir
 
-  method update dt =
-    let speed = dt *. (Globals.speed ()) in
-    let speed = speed *. match going with
-      | `UP   | `LEFT  -> -1.0
-      | `DOWN | `RIGHT -> 1.0
-      | `NONE          -> 0.0
-    in
-    offset <- offset +. speed
-  ; if speed != 0.0
-    then self#fix_offset ()
-end
+let looking () = attrs.lateral
 
-let player = new pacman
-
-let go = player#go
-
-let looking () = player#looking
-
-let xy tpe = (player#x tpe, player#y tpe)
-
-let gonna () = player#gonna
-
-let restart _ = player#restart ()
+let restart _ =
+  attrs.position <- (9, 15)
+; attrs.offset   <- 0.0
+; attrs.going    <- `NONE
+; attrs.required <- `UP
+; attrs.lateral  <- `LEFT
 
 let update = function
-  | [`Float dt] -> player#update dt
+  | [`Float dt] -> let speed = dt *. (Globals.speed ()) in
+                   let speed = speed *. match attrs.going with
+                     | `UP   | `LEFT  -> -1.0
+                     | `DOWN | `RIGHT -> 1.0
+                     | `NONE          -> 0.0
+                   in
+                   attrs.offset <- attrs.offset +. speed
+                 ; if speed != 0.0
+                   then fix_offset ()
   | _           -> ()
 
 let connect_handles () =
   Signal.connect "levelup" restart  |> ignore
 ; Signal.connect "restart" restart  |> ignore
 ; Signal.connect "update"  update   |> ignore
+
+let () = restart []

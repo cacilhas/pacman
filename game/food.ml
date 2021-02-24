@@ -24,33 +24,19 @@ let base = String.concat ""
 
 let map = Array.init (String.length base) (fun _ -> '\x00')
 
-class cherry = object (self)
+type fruit = {
+  mutable show : bool
+; mutable time : float
+}
 
-  val mutable show_cherry = false
-  val mutable cherry_time = 0.0
+let cherry = {
+  show = false
+; time = 0.0
+}
 
-  method shown = show_cherry
-
-  method time = cherry_time
-
-  method reset ~show =
-    cherry_time <- 0.0
-  ; show_cherry <- show
-
-  method update dt =
-    cherry_time <- cherry_time +. dt
-  ; if show_cherry
-    then begin
-      if cherry_time > 8.0
-      then self#reset ~show:false
-    end
-    else begin
-      if cherry_time > 12.0 && Random.int 100 > 90
-      then self#reset ~show:true
-    end
-end
-
-let the_cherry = new cherry
+let reset ~show =
+  cherry.time <- 0.0
+; cherry.show <- show
 
 let resting () = Array.map int_of_char map
               |> Array.map (fun e -> if e = 3 then 0 else e)
@@ -62,14 +48,14 @@ let index_of_xy x y =
   else y*19 + x
 
 let get_cell (x, y) = match int_of_char map.(index_of_xy x y) with
-  | 3     -> if the_cherry#shown
+  | 3     -> if cherry.show
              then 3
              else 0
   | value -> value
 
 let eaten i =
   if map.(i) = '\x03'
-  then the_cherry#reset ~show:false
+  then reset ~show:false
   else map.(i) <- '\x00'
 
 let eat = function
@@ -83,7 +69,16 @@ let restart _ =
   String.iteri (fun i c -> map.(i) <- c) base
 
 let update = function
-  | [`Float dt] -> the_cherry#update dt
+  | [`Float dt] -> cherry.time <- cherry.time +. dt
+                 ; if cherry.show
+                   then begin
+                     if cherry.time > 8.0
+                     then reset ~show:false
+                   end
+                   else begin
+                     if cherry.time > 12.0 && Random.int 100 > 90
+                     then reset ~show:true
+                   end
   | _           -> ()
 
 let connect_handles () =
