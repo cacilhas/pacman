@@ -116,3 +116,8 @@ let update = function
                  ; if speed != 0.0
                    then fix_offset ()
   | _ -> ()
+
+let connect_handles () =
+  Signal.connect "levelup" restart  |> ignore
+; Signal.connect "restart" restart  |> ignore
+; Signal.connect "update"  update   |> ignore

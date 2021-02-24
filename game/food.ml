@@ -43,4 +43,9 @@ let eat = function
 let restart _ =
   String.iteri (fun i c -> map.(i) <- c) base
 
+let connect_handles () =
+  Signal.connect "gotta"   eat     |> ignore
+; Signal.connect "levelup" restart |> ignore
+; Signal.connect "restart" restart |> ignore
+
 let () = restart []

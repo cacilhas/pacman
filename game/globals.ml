@@ -101,4 +101,12 @@ let update = function
   | [`Float dt] -> update_time dt
   | _           -> ()
 
+let connect_handles () =
+  Signal.connect "chstatus"  chstatus  |> ignore
+; Signal.connect "collision" collision |> ignore
+; Signal.connect "levelup"   levelup   |> ignore
+; Signal.connect "restart"   restart   |> ignore
+; Signal.connect "scored"    scored    |> ignore
+; Signal.connect "update"    update    |> ignore
+
 let () = restart []

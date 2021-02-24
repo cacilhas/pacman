@@ -197,9 +197,7 @@ module type GHOST = sig
   val xy       : [`BOARD | `SCREEN] -> int * int
 
   (* Signals *)
-  val chstatus : Signal.arg list -> unit
-  val restart  : Signal.arg list -> unit
-  val update   : Signal.arg list -> unit
+  val connect_handles : unit -> unit
 end
 
 
@@ -234,4 +232,10 @@ module Prototype (G : PROTOTYPE) : GHOST = struct
   let status () = ghost#status
 
   let xy tpe = ghost#xy tpe
+
+  let connect_handles () =
+    Signal.connect "chstatus" chstatus |> ignore
+  ; Signal.connect "levelup"  restart  |> ignore
+  ; Signal.connect "restart"  restart  |> ignore
+  ; Signal.connect "update"   update   |> ignore
 end

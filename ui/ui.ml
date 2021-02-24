@@ -107,41 +107,11 @@ let rec loop board ticks last_tick =
   then loop board (Sdltimer.get_ticks ()) ticks
 
 let connect_handles () =
-  (* Ghosts *)
-  Signal.connect "chstatus" Game.Blinky.chstatus |> ignore
-; Signal.connect "chstatus" Game.Clyde.chstatus  |> ignore
-; Signal.connect "chstatus" Game.Inky.chstatus   |> ignore
-; Signal.connect "chstatus" Game.Pinky.chstatus  |> ignore
-; Signal.connect "levelup"  Game.Blinky.restart  |> ignore
-; Signal.connect "levelup"  Game.Clyde.restart   |> ignore
-; Signal.connect "levelup"  Game.Inky.restart    |> ignore
-; Signal.connect "levelup"  Game.Pinky.restart   |> ignore
-; Signal.connect "restart"  Game.Blinky.restart  |> ignore
-; Signal.connect "restart"  Game.Clyde.restart   |> ignore
-; Signal.connect "restart"  Game.Inky.restart    |> ignore
-; Signal.connect "restart"  Game.Pinky.restart   |> ignore
-; Signal.connect "update"   Game.Blinky.update   |> ignore
-; Signal.connect "update"   Game.Clyde.update    |> ignore
-; Signal.connect "update"   Game.Inky.update     |> ignore
-; Signal.connect "update"   Game.Pinky.update    |> ignore
-; Signal.connect "update"   Ghost.update         |> ignore
-
-(* Pacman *)
-; Signal.connect "gotta"     Game.Food.eat         |> ignore
-; Signal.connect "levelup"   Game.Pacman.restart   |> ignore
-; Signal.connect "restart"   Game.Pacman.restart   |> ignore
-; Signal.connect "update"    Game.Pacman.update    |> ignore
-; Signal.connect "update"    Pacman.update         |> ignore
-
-  (* Score, board, etc *)
-; Signal.connect "collision" Game.Globals.collision |> ignore
-; Signal.connect "levelup"   Game.Food.restart      |> ignore
-; Signal.connect "restart"   Game.Globals.restart   |> ignore
-; Signal.connect "restart"   Game.Food.restart      |> ignore
-; Signal.connect "scored"    Audio.play_scored      |> ignore
-; Signal.connect "scored"    Game.Globals.scored    |> ignore
-; Signal.connect "update"    Game.Globals.update    |> ignore
-; Signal.connect "update"    Food_render.update     |> ignore
+  Game.Connections.connect_handles ()
+; Signal.connect "update" Ghost.update       |> ignore
+; Signal.connect "update" Pacman.update      |> ignore
+; Signal.connect "scored" Audio.play_scored  |> ignore
+; Signal.connect "update" Food_render.update |> ignore
 
 let start_sdl () =
   Sdl.init [`AUDIO; `EVENTTHREAD; `TIMER; `VIDEO]
