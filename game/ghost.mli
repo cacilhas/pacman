@@ -1,4 +1,4 @@
-class ghost : string -> int * int -> (unit -> int * int) -> object
+class ghost : string -> int * int -> (ghost -> int * int) -> object
 
   method chstatus : Globals.status -> unit
   method looking  : Tmap.direction

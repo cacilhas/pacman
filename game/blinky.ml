@@ -1,4 +1,4 @@
-let chase_target () = Pacman.xy `BOARD
+let chase_target _ = Pacman.xy `BOARD
 
 let ghost = new Ghost.ghost "blinky" (16, -1) chase_target
 

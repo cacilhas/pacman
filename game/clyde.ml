@@ -1,17 +1,14 @@
-let chase_target _ =
-  let (x, y) = Pacman.xy `BOARD in
-  let (x, y) = match Pacman.gonna () with
-    | `LEFT  -> (x-1, y)
-    | `RIGHT -> (x+1, y)
-    | `UP    -> (x, y-1)
-    | `DOWN  -> (x, y+1)
-  and (gx, gy) = Blinky.xy `BOARD in
-  let dx = 2*x - gx
-  and dy = 2*y - gy in
-  (dx, dy)
+let chase_target clyde =
+  let (x, y) = Pacman.xy `BOARD
+  and (gx, gy) = clyde#xy `BOARD in
+  let dx = x - gx
+  and dy = y - gy in
+  let d = (dx*dx) + (dy*dy) in
+  if d >= 16
+  then (x, y)
+  else (2, 21)
 
-
-let ghost = new Ghost.ghost "inky" (16, 21) chase_target
+let ghost = new Ghost.ghost "clyde" (2, 21) chase_target
 
 let do_chstatus = function
   | Some status -> ghost#chstatus status

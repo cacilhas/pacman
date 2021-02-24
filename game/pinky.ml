@@ -1,4 +1,4 @@
-let chase_target () =
+let chase_target _ =
   let (x, y) = Pacman.xy `BOARD in
   match Pacman.gonna () with
   | `LEFT  -> (x-4, y)

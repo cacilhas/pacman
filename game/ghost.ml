@@ -102,7 +102,7 @@ class ghost name scater_target chase_target = object (self)
       | `SCATTER    -> target <- scater_target
       | `FRIGHTENED -> self#runaway ()
       | `EATEN      -> self#gohome ()
-      | `CHASE      -> target <- chase_target ()
+      | `CHASE      -> target <- chase_target (self :> ghost)
 
   method private add_home directions =
     if the_status = `EATEN
