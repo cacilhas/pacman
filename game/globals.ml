@@ -94,7 +94,6 @@ let chstatus = function
 let restart _ =
   g.speed           <- 200.0
 ; g.score           <- 0
-; g.highscore       <- 0
 ; g.scatter_time    <- 7.0
 ; g.chase_time      <- 20.0
 ; g.frightened_time <- 10.0

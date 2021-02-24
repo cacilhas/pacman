@@ -221,28 +221,28 @@ end
 
 module Prototype (G : PROTOTYPE) : GHOST = struct
 
-  let ghost = new ghost (G.scatter_target ()) G.chase_target
+  let me = new ghost (G.scatter_target ()) G.chase_target
 
   let do_chstatus = function
-    | Some status -> ghost#chstatus status
+    | Some status -> me#chstatus status
     | None        -> ()
 
   let chstatus = function
-    | [`String status] -> if ghost#status != `EATEN
+    | [`String status] -> if me#status != `EATEN
                           then do_chstatus (Globals.status_of_string status)
     | _                -> ()
 
-  let restart _ = ghost#restart ()
+  let restart _ = me#restart ()
 
   let update = function
-    | [`Float dt] -> ghost#update dt
+    | [`Float dt] -> me#update dt
     | _ -> ()
 
-  let looking () = ghost#looking
+  let looking () = me#looking
 
-  let status () = ghost#status
+  let status () = me#status
 
-  let xy tpe = ghost#xy tpe
+  let xy tpe = me#xy tpe
 
   let connect_handles () =
     Signal.connect "chstatus" chstatus |> ignore
