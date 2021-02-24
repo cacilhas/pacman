@@ -86,13 +86,11 @@ class ghost name scater_target chase_target = object (self)
     ; going_out <- true
     ; target <- outside
     end
-    else if position = outside
-    then target <- home
-    else begin
-      let (x, y) = position in
-      if y < 7 || y > 9 || x < 8 || x > 10
-      then target <- outside
-    end
+    else if position = outside && target = outside
+    then (target <- home; going <- `DOWN)
+    else let (x, y) = position in
+         if y < 8 || y > 9 || x < 8 || x > 10
+         then target <- outside
 
   method private update_target () =
     if going_out
@@ -106,13 +104,24 @@ class ghost name scater_target chase_target = object (self)
       | `EATEN      -> self#gohome ()
       | `CHASE      -> target <- chase_target ()
 
+  method private add_home directions =
+    if the_status = `EATEN
+    then begin
+      let (x, y) = position in
+      if x = 9 && (y = 7 || y = 8)
+      then `DOWN :: directions
+      else directions
+    end
+    else directions
+
   method private decide () =
     self#update_target ()
   ; let directions = Tmap.at `GHOST position
                   |> List.filter (fun d -> d != self#back)
                   |> List.map (fun d -> (self#distance d, d))
                   |> List.sort (fun (a, _) (b, _) -> compare a b)
-                  |> List.map (fun (_, d) -> d) in
+                  |> List.map (fun (_, d) -> d)
+                  |> self#add_home in
     match directions with
       | []     -> self#turnback ()
       | dir::_ -> going <- dir
