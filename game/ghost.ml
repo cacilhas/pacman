@@ -1,7 +1,7 @@
 let home    = (8, 9)
 let outside = (9, 7)
 
-class ghost name scater_target chase_target = object (self)
+class ghost name scatter_target chase_target = object (self)
 
   val mutable going_out = true
   val mutable position  = home
@@ -99,7 +99,7 @@ class ghost name scater_target chase_target = object (self)
       then (going_out <- false ; self#update_target ())
     end
     else match the_status with
-      | `SCATTER    -> target <- scater_target
+      | `SCATTER    -> target <- scatter_target
       | `FRIGHTENED -> self#runaway ()
       | `EATEN      -> self#gohome ()
       | `CHASE      -> target <- chase_target (self :> ghost)
@@ -187,4 +187,51 @@ class ghost name scater_target chase_target = object (self)
     offset <- offset +. speed
   ; self#fix_offset ()
   ; self#check_colision ()
+end
+
+
+module type GHOST = sig
+
+  val looking  : unit -> Tmap.direction
+  val status   : unit -> Globals.status
+  val xy       : [`BOARD | `SCREEN] -> int * int
+
+  (* Signals *)
+  val chstatus : Signal.arg list -> unit
+  val restart  : Signal.arg list -> unit
+  val update   : Signal.arg list -> unit
+end
+
+
+module type PROTOTYPE = sig
+
+  val chase_target   : ghost -> int * int
+  val scatter_target : unit -> int * int
+end
+
+
+module Prototype (G : PROTOTYPE) : GHOST = struct
+
+  let ghost = new ghost "blinky" (G.scatter_target ()) G.chase_target
+
+  let do_chstatus = function
+    | Some status -> ghost#chstatus status
+    | None        -> ()
+
+  let chstatus = function
+    | [`String status] -> if ghost#status != `EATEN
+                          then do_chstatus (Globals.status_of_string status)
+    | _                -> ()
+
+  let restart _ = ghost#restart ()
+
+  let update = function
+    | [`Float dt] -> ghost#update dt
+    | _ -> ()
+
+  let looking () = ghost#looking
+
+  let status () = ghost#status
+
+  let xy tpe = ghost#xy tpe
 end
