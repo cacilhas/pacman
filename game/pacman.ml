@@ -98,7 +98,12 @@ let fix_offset () =
   end
 ; decide ()
 
-let gonna () = !going
+let gonna () = match !going with
+  | `NONE  -> (!left_right :> Tmap.direction)
+  | `LEFT  -> `LEFT
+  | `RIGHT -> `RIGHT
+  | `UP    -> `UP
+  | `DOWN  -> `DOWN
 
 let update = function
   | [`Float dt] -> let speed = dt *. (Globals.speed ()) in

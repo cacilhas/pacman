@@ -38,6 +38,8 @@ end = struct
       (Game.Blinky.status ()) (Game.Blinky.looking ())
   ; Ghost.render_on surface (Game.Pinky.xy `SCREEN) `PINKY
       (Game.Pinky.status ()) (Game.Pinky.looking ())
+  ; Ghost.render_on surface (Game.Inky.xy `SCREEN) `INKY
+      (Game.Inky.status ()) (Game.Inky.looking ())
   ; Game.Globals.score 0 |> Score_render.render surface (1, 0)
   ; Game.Globals.highscore () |> Score_render.render surface (15, 0)
   ; blit_surface surface
@@ -105,10 +107,13 @@ let rec loop board ticks last_tick =
 let connect_handles () =
   (* Ghosts *)
   Signal.connect "chstatus" Game.Blinky.chstatus |> ignore
+; Signal.connect "chstatus" Game.Inky.chstatus   |> ignore
 ; Signal.connect "chstatus" Game.Pinky.chstatus  |> ignore
 ; Signal.connect "restart"  Game.Blinky.restart  |> ignore
+; Signal.connect "restart"  Game.Inky.restart    |> ignore
 ; Signal.connect "restart"  Game.Pinky.restart   |> ignore
 ; Signal.connect "update"   Game.Blinky.update   |> ignore
+; Signal.connect "update"   Game.Inky.update     |> ignore
 ; Signal.connect "update"   Game.Pinky.update    |> ignore
 ; Signal.connect "update"   Ghost.update         |> ignore
 
