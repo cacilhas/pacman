@@ -24,6 +24,9 @@ let base = String.concat ""
 
 let map = Array.init (String.length base) (fun _ -> '\x00')
 
+let show_cherry = ref false
+let cherry_time = ref 0.0
+
 let resting () = Array.map int_of_char map |> Array.fold_left Int.add 0
 
 let index_of_xy x y =
@@ -31,7 +34,11 @@ let index_of_xy x y =
   then 0
   else y*19 + x
 
-let get_cell (x, y) = int_of_char map.(index_of_xy x y)
+let get_cell (x, y) = match int_of_char map.(index_of_xy x y) with
+  | 3     -> if !show_cherry
+             then 3
+             else 0
+  | value -> value
 
 let eat = function
   | [`Pair (x, y)] -> get_cell (x, y) |> Globals.score |> ignore
@@ -43,9 +50,23 @@ let eat = function
 let restart _ =
   String.iteri (fun i c -> map.(i) <- c) base
 
+let update = function
+  | [`Float dt] -> cherry_time := !cherry_time +. dt
+                 ; if !show_cherry
+                   then begin
+                     if !cherry_time > 8.0
+                     then (show_cherry := false ; cherry_time := 0.0)
+                   end
+                   else begin
+                     if !cherry_time > 12.0 && Random.int 100 > 90
+                     then (show_cherry := true ; cherry_time := 0.0)
+                   end
+  | _           -> ()
+
 let connect_handles () =
   Signal.connect "gotta"   eat     |> ignore
 ; Signal.connect "levelup" restart |> ignore
 ; Signal.connect "restart" restart |> ignore
+; Signal.connect "update"  update  |> ignore
 
 let () = restart []

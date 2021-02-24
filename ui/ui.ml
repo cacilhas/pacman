@@ -121,7 +121,8 @@ let start_sdl () =
 ; Screen.init ()
 
 let mainloop () =
-  start_sdl ()
+  Random.self_init ()
+; start_sdl ()
 ; connect_handles ()
 ; let board = Sdlvideo.create_RGB_surface [`HWSURFACE]
               ~w:Screen.width ~h:Screen.height ~bpp:32
