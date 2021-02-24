@@ -113,16 +113,20 @@ class ghost scatter_target chase_target = object (self)
     else directions
 
   method private decide () =
-    self#update_target ()
-  ; let directions = Tmap.at `GHOST position
-                  |> List.filter (fun d -> d != self#back)
-                  |> List.map (fun d -> (self#distance d, d))
-                  |> List.sort (fun (a, _) (b, _) -> compare a b)
-                  |> List.map (fun (_, d) -> d)
-                  |> self#add_home in
-    match directions with
-      | []     -> self#turnback ()
-      | dir::_ -> going <- dir
+    let (x, _) = position in
+    if x > 0 && x < 20
+    then begin
+      self#update_target ()
+    ; let directions = Tmap.at `GHOST position
+                    |> List.filter (fun d -> d != self#back)
+                    |> List.map (fun d -> (self#distance d, d))
+                    |> List.sort (fun (a, _) (b, _) -> compare a b)
+                    |> List.map (fun (_, d) -> d)
+                    |> self#add_home in
+      match directions with
+        | []     -> self#turnback ()
+        | dir::_ -> going <- dir
+    end
 
   method private fix_x () =
     let sx = self#x `BOARD in
