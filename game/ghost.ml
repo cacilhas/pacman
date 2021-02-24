@@ -1,7 +1,7 @@
 let home    = (8, 9)
 let outside = (9, 7)
 
-class ghost name scatter_target chase_target = object (self)
+class ghost scatter_target chase_target = object (self)
 
   val mutable going_out = true
   val mutable position  = home
@@ -19,8 +19,6 @@ class ghost name scatter_target chase_target = object (self)
   ; offset     <- 0.0
   ; going      <- `RIGHT
   ; the_status <- `SCATTER
-
-  method name : string = name
 
   method looking = going
 
@@ -192,12 +190,10 @@ end
 
 module type GHOST = sig
 
-  val looking  : unit -> Tmap.direction
-  val status   : unit -> Globals.status
-  val xy       : [`BOARD | `SCREEN] -> int * int
-
-  (* Signals *)
   val connect_handles : unit -> unit
+  val looking         : unit -> Tmap.direction
+  val status          : unit -> Globals.status
+  val xy              : [`BOARD | `SCREEN] -> int * int
 end
 
 
@@ -210,7 +206,7 @@ end
 
 module Prototype (G : PROTOTYPE) : GHOST = struct
 
-  let ghost = new ghost "blinky" (G.scatter_target ()) G.chase_target
+  let ghost = new ghost (G.scatter_target ()) G.chase_target
 
   let do_chstatus = function
     | Some status -> ghost#chstatus status
