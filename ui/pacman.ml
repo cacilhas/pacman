@@ -10,9 +10,9 @@ let frames =
   and bg = Sdlvideo.map_RGB surface Sdlvideo.black
   and eye = Sdlvideo.map_RGB surface Sdlvideo.white in
   for i = 0 to 5 do
-    Circle.fill_sphere surface ~x:(i*48 + 24) ~y:24 ~radius:22 color
-  ; Circle.fill_circle surface ~x:(i*48 + 24) ~y:12 ~radius:3 bg
-  ; Circle.fill_circle surface ~x:(i*48 + 24) ~y:12 ~radius:2 eye
+    Sdlhelpers.fill_sphere surface ~x:(i*48 + 24) ~y:24 ~radius:22 color
+  ; Sdlhelpers.fill_circle surface ~x:(i*48 + 24) ~y:12 ~radius:3 bg
+  ; Sdlhelpers.fill_circle surface ~x:(i*48 + 24) ~y:12 ~radius:2 eye
   done
 ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:24  ~y:23 ~w:24 ~h:2) surface bg
 ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:144 ~y:23 ~w:24 ~h:2) surface bg

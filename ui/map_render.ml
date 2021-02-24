@@ -8,8 +8,8 @@ let walls =
   in
   let color = Sdlvideo.map_RGB surface (84, 128, 192)
   and bg = Sdlvideo.map_RGB surface Sdlvideo.black in
-  Circle.fill_circle surface ~x:24 ~y:24 ~radius:6 color                          (* 0 = lonely *)
-; Circle.fill_circle surface ~x:24 ~y:24 ~radius:4 bg
+  Sdlhelpers.fill_circle surface ~x:24 ~y:24 ~radius:6 color                          (* 0 = lonely *)
+; Sdlhelpers.fill_circle surface ~x:24 ~y:24 ~radius:4 bg
 ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:66  ~y:0  ~w:12 ~h:24) surface color (* 48 = UP *)
 ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:68  ~y:0  ~w:8  ~h:24) surface bg
 ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:114 ~y:24 ~w:12 ~h:24) surface color (* 96 = DOWN *)

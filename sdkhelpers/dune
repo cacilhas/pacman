@@ -1,0 +1,3 @@
+(library
+  (name sdlhelpers)
+  (libraries sdl sdl.sdlmixer))

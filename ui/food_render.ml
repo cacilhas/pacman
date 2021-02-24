@@ -10,8 +10,8 @@ let cells =
   and power  = Sdlvideo.map_RGB surface (240, 240, 64)
   and cherry = Sdlvideo.map_RGB surface (141, 10, 21)
   and cape   = Sdlvideo.map_RGB surface (64, 240, 0) in
-  Circle.fill_circle surface ~x:24 ~y:24 ~radius:6 dot
-; Circle.fill_sphere surface ~x:72 ~y:24 ~radius:10 power
+  Sdlhelpers.fill_circle surface ~x:24 ~y:24 ~radius:6 dot
+; Sdlhelpers.fill_sphere surface ~x:72 ~y:24 ~radius:10 power
 ; for i = 0 to 10 do
     let x = i + 104
     and y = 30 - (i / 2) in
@@ -20,8 +20,8 @@ let cells =
     and y = 32 - (i * 3 / 2) in
     Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:x ~y:y ~w:4 ~h:2) surface cape
   done
-; Circle.fill_sphere surface ~x:116 ~y:38 ~radius:8  cherry
-; Circle.fill_sphere surface ~x:106 ~y:38 ~radius:10 cherry
+; Sdlhelpers.fill_sphere surface ~x:116 ~y:38 ~radius:8  cherry
+; Sdlhelpers.fill_sphere surface ~x:106 ~y:38 ~radius:10 cherry
 ; surface
 
 let cycle = ref 0.0

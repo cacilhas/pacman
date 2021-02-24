@@ -1,3 +1,3 @@
 (library
   (name ui)
-  (libraries base64 game sdl sdl.sdlmixer signal threads))
+  (libraries base64 game sdl sdl.sdlmixer sdlhelpers signal threads))
