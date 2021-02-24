@@ -143,12 +143,12 @@ class ghost scatter_target chase_target = object (self)
     let sx = self#x `BOARD in
     if sx < -1
     then begin
-      self#update_position (21 + sx, 9) (* MAGIC NUMBER, see map.ml *)
+      self#update_position (21 + sx, Tmap.centre)
     ; going <- `LEFT
     end
     else if sx > 21
     then begin
-      self#update_position (21 - sx, 9) (* MAGIC NUMBER, see map.ml *)
+      self#update_position (21 - sx, Tmap.centre)
     ; going <- `RIGHT
     end
 

@@ -35,6 +35,7 @@ type nullable_direction = [ `NONE
                           | `RIGHT
                           ]
 
+let centre       = 9
 let int_of_up    = 1
 let int_of_down  = 2
 let int_of_left  = 4

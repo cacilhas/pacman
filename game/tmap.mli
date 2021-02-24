@@ -17,6 +17,7 @@ val get_cell       : int * int -> int
 val get_food       : int * int -> int
 val show_direction : direction -> string
 
+val centre       : int
 val int_of_up    : int
 val int_of_down  : int
 val int_of_left  : int

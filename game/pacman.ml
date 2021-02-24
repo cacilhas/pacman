@@ -63,12 +63,12 @@ let fix_x () =
   let sx = get_x `BOARD in
   if sx < -1
   then begin
-    attrs.position <- (21 + sx, 9) (* MAGIC NUMBER, see map.ml *)
+    attrs.position <- (21 + sx, Tmap.centre)
   ; attrs.going <- `LEFT
   end
   else if sx > 21
   then begin
-    attrs.position <- (21 - sx, 9) (* MAGIC NUMBER, see map.ml *)
+    attrs.position <- (21 - sx, Tmap.centre)
   ; attrs.going <- `RIGHT
   end
 
