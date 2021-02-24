@@ -46,6 +46,6 @@ let update = function
 let render surface =
   for y = 0 to 20 do
     for x = 0 to 18 do
-      Game.Food.get_cell (x, y) |> render_cell surface x y
+      Game.Tmap.get_food (x, y) |> render_cell surface x y
     done
   done

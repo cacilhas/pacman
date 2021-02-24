@@ -57,6 +57,8 @@ let get_cell (x, y) =
   then 255
   else int_of_char map.[y*19 + x]
 
+let get_food = Food.get_cell
+
 let at actor position =
   let cell = get_cell position in
   let cell = match actor with

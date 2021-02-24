@@ -14,6 +14,7 @@ type nullable_direction = [ `NONE
 val at             : [`PACMAN | `GHOST] -> int * int -> direction list
 val can_go         : int -> direction -> bool
 val get_cell       : int * int -> int
+val get_food       : int * int -> int
 val show_direction : direction -> string
 
 val int_of_up    : int
