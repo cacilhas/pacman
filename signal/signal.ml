@@ -5,58 +5,76 @@ type arg = [ `Float of float
            | `String of string
            ]
 type callback = arg list -> unit
+type handle_wrap = handle * (string * callback)
 
-let debugging = ref false
-let available = ref 0l
+class handle_store = object (self)
 
-let debug st = debugging := st
 
-let log_connect signal id =
-  if !debugging
-  then Printf.eprintf "connected signal %s with handle %ld\n" signal id
+  val mutable debugging = false
+  val mutable available = 0l
+  val mutable handles : handle_wrap list = []
 
-let log_disconnect signal id =
-  if !debugging
-  then Printf.eprintf "handle %ld disconnected from signal %s\n" id signal
+  val string_from_arg = function
+    | `Float value  -> Printf.sprintf "%g" value
+    | `Int value    -> Printf.sprintf "%d" value
+    | `Pair (a, b)  -> Printf.sprintf "(%d, %d)" a b
+    | `String value -> Printf.sprintf "\"%s\"" value
 
-let string_from_arg = function
-  | `Float value  -> Printf.sprintf "%g" value
-  | `Int value    -> Printf.sprintf "%d" value
-  | `Pair (a, b)  -> Printf.sprintf "(%d, %d)" a b
-  | `String value -> Printf.sprintf "\"%s\"" value
+  method debugging = debugging
 
-let log_emit signal args =
-  if !debugging
-  then let args_str = List.map string_from_arg args
-                   |> String.concat ", " in
-       Printf.eprintf "emitted: %s [%s]\n" signal args_str
+  method private next_handle =
+    let handle = available in
+    available <- Int32.succ handle
+  ; handle
 
-let handles : (handle * (string * callback)) list ref = ref []
+  method set_debug st = debugging <- st
 
-let next_handle () =
-  let handle = !available in
-  available := Int32.add handle 1l
-; handle
+  method private log_connect signal id =
+    if debugging
+    then Printf.eprintf "connected signal %s with handle %ld\n" signal id
 
-let connect signal cb =
-  let id = next_handle () in
-  handles := (id, (signal, cb)) :: !handles
-; log_connect signal id
-; id
+  method private log_disconnect signal id =
+    if debugging
+    then Printf.eprintf "handle %ld disconnected from signal %s\n" id signal
 
-let get id = List.assoc id !handles
+  method private filter_signal signal =
+    fun (_, (name, cb)) -> if name = signal then Some cb else None
 
-let filter_signal signal =
-  fun (_, (name, cb)) -> if name = signal then Some cb else None
+  method private log_emit signal (args : arg list) =
+    if debugging
+    then let args_str = List.map string_from_arg args
+                        |> String.concat ", " in
+         Printf.eprintf "emitted: %s [%s]\n" signal args_str
 
-let emit signal args =
-  log_emit signal args
-; List.filter_map (filter_signal signal) !handles
-  |> List.iter (fun cb -> try (cb args) with e -> Printf.eprintf "%s" (Printexc.to_string e))
+  method add_handle signal cb =
+    let id = self#next_handle in
+    handles <- (id, (signal, cb)) :: handles
+  ; self#log_connect signal id
+  ; id
 
-let disconnect signal id =
-  let (name, _) = get id in
-  if name != signal
-  then Failure (Printf.sprintf "signal %s doesn't match handle id %ld" signal id) |> raise
-; handles := List.remove_assoc id !handles
-; log_disconnect signal id
+  method get_handle id = List.assoc id handles
+
+  method emit_signal signal args =
+    self#log_emit signal args
+  ; List.filter_map (self#filter_signal signal) handles
+    |> List.iter (fun cb -> try (cb args) with e -> Printf.eprintf "%s" (Printexc.to_string e))
+
+  method remove_handle signal id =
+    let (name, _) = self#get_handle id in
+    if name != signal
+    then Failure (Printf.sprintf "signal %s doesn't match handle id %ld" signal id) |> raise
+  ; handles <- List.remove_assoc id handles
+  ; self#log_disconnect signal id
+end
+
+let internal = new handle_store
+
+let debug = internal#set_debug
+
+let connect = internal#add_handle
+
+let get = internal#get_handle
+
+let emit = internal#emit_signal
+
+let disconnect = internal#remove_handle
