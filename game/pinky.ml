@@ -13,7 +13,8 @@ let do_chstatus = function
   | None        -> ()
 
 let chstatus = function
-  | [`String status] -> do_chstatus (Globals.status_of_string status)
+  | [`String status] -> if ghost#status != `EATEN
+                        then do_chstatus (Globals.status_of_string status)
   | _                -> ()
 
 let restart _ = ghost#restart ()

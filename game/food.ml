@@ -24,6 +24,8 @@ let base = String.concat ""
 
 let map = Array.init (String.length base) (fun _ -> '\x00')
 
+let resting () = Array.map int_of_char map |> Array.fold_left Int.add 0
+
 let index_of_xy x y =
   if x < 0 || x > 18 || y < 0 || y > 20
   then 0
@@ -34,6 +36,8 @@ let get_cell (x, y) = int_of_char map.(index_of_xy x y)
 let eat = function
   | [`Pair (x, y)] -> get_cell (x, y) |> Globals.score |> ignore
                     ; map.(index_of_xy x y) <- '\x00'
+                    ; if resting () = 0
+                      then Signal.emit "levelup" []
   | _ -> ()
 
 let restart _ =
