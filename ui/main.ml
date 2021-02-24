@@ -34,7 +34,10 @@ end = struct
   ; render_beige surface
   ; Food_render.render surface
   ; Pacman.render_on surface
-  ; Ghost.render_on surface (Game.Blinky.xy `SCREEN) `BLINKY (Game.Blinky.status ()) (Game.Blinky.looking ())
+  ; Ghost.render_on surface (Game.Blinky.xy `SCREEN) `BLINKY
+      (Game.Blinky.status ()) (Game.Blinky.looking ())
+  ; Ghost.render_on surface (Game.Pinky.xy `SCREEN) `PINKY
+      (Game.Pinky.status ()) (Game.Pinky.looking ())
   ; Game.Globals.score 0 |> Score_render.render surface (1, 0)
   ; Game.Globals.highscore () |> Score_render.render surface (15, 0)
   ; blit_surface surface
@@ -102,8 +105,11 @@ let rec loop board ticks last_tick =
 let connect_handles () =
   (* Ghosts *)
   Signal.connect "chstatus" Game.Blinky.chstatus |> ignore
+; Signal.connect "chstatus" Game.Pinky.chstatus  |> ignore
 ; Signal.connect "restart"  Game.Blinky.restart  |> ignore
+; Signal.connect "restart"  Game.Pinky.restart   |> ignore
 ; Signal.connect "update"   Game.Blinky.update   |> ignore
+; Signal.connect "update"   Game.Pinky.update    |> ignore
 ; Signal.connect "update"   Ghost.update         |> ignore
 
 (* Pacman *)
