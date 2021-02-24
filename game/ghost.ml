@@ -56,7 +56,11 @@ class ghost scatter_target chase_target = object (self)
   method private back =
     let (x, y) = position
     and (lx, ly) = last_pos in
-    if lx < x
+    if x <= 0 && lx >=18
+    then `LEFT
+    else if x >= 18 && lx <= 0
+    then `RIGHT
+    else if lx < x
     then `LEFT
     else if lx > x
     then `RIGHT
@@ -112,21 +116,28 @@ class ghost scatter_target chase_target = object (self)
     end
     else directions
 
-  method private decide () =
+  method private frozen =
+    if the_status = `FRIGHTENED
+    then 0.75
+    else 1.0
+
+  method private remove_back d =
     let (x, _) = position in
-    if x > 0 && x < 20
-    then begin
-      self#update_target ()
-    ; let directions = Tmap.at `GHOST position
-                    |> List.filter (fun d -> d != self#back)
-                    |> List.map (fun d -> (self#distance d, d))
-                    |> List.sort (fun (a, _) (b, _) -> compare a b)
-                    |> List.map (fun (_, d) -> d)
-                    |> self#add_home in
-      match directions with
-        | []     -> self#turnback ()
-        | dir::_ -> going <- dir
-    end
+    if x <= 0 || x >= 18
+    then (d = `LEFT || d = `RIGHT) && d != self#back
+    else d != self#back
+
+  method private decide () =
+    self#update_target ()
+  ; let directions = Tmap.at `GHOST position
+                  |> List.filter self#remove_back
+                  |> List.map (fun d -> (self#distance d, d))
+                  |> List.sort (fun (a, _) (b, _) -> compare a b)
+                  |> List.map (fun (_, d) -> d)
+                  |> self#add_home in
+    match directions with
+      | []     -> self#turnback ()
+      | dir::_ -> going <- dir
 
   method private fix_x () =
     let sx = self#x `BOARD in
@@ -181,7 +192,7 @@ class ghost scatter_target chase_target = object (self)
 
   method update dt =
     self#decide ()
-  ; let speed = dt *. (Globals.speed ()) in
+  ; let speed = dt *. (Globals.speed ()) *. self#frozen in
     let speed = speed *. match going with
       | `UP   | `LEFT  -> -1.0
       | `DOWN | `RIGHT -> 1.0
