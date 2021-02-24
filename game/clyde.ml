@@ -1,5 +1,7 @@
 include Ghost.Prototype(struct
 
+  let scatter_target () = (2, 21)
+
   let chase_target (clyde : Ghost.ghost) =
     let (x, y) = Pacman.xy `BOARD
     and (gx, gy) = clyde#xy `BOARD in
@@ -8,8 +10,6 @@ include Ghost.Prototype(struct
     let d = (dx*dx) + (dy*dy) in
     if d >= 16
     then (x, y)
-    else (2, 21)
-
-  let scatter_target () = (2, 21)
+    else scatter_target ()
 
 end)
