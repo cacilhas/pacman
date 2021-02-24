@@ -47,7 +47,7 @@ let collision = function
   | _                -> ()
 
 let scored = function
-  | [`Int 2] -> Signal.emit "chstatus" [`String "frightened"]
+  | [`Int 2] -> Signal.emit "chstatus" [`String (string_of_status `FRIGHTENED)]
   | _ -> ()
 
 let restart _ =
