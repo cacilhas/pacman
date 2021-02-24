@@ -1,1 +1,1 @@
-let () = Ui.Main.mainloop ()
+let () = Ui.mainloop ()
