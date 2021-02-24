@@ -138,17 +138,11 @@ let frames =
 ; Sdlhelpers.fill_circle surface ~x:180 ~y:220 ~radius:6 blue
 ; surface
 
-let cur_i = ref 0
-let acc   = ref 0.0
+let framer = new Framer.framing 0.12 4
 
 let update = function
-  | [`Float dt] -> acc := !acc +. dt
-                 ; if !acc >= 0.12
-                   then begin
-                     acc := !acc -. 0.1
-                   ; cur_i := (succ !cur_i) mod 4
-                   end
-  | _ -> ()
+  | [`Float dt] -> framer#update dt
+  | _           -> ()
 
 let current_frame i whereto =
   if i = 5
@@ -158,7 +152,7 @@ let current_frame i whereto =
     | `LEFT  -> Sdlvideo.rect ~x:0   ~y:240 ~w:48 ~h:48
     | `RIGHT -> Sdlvideo.rect ~x:48  ~y:240 ~w:48 ~h:48
   else
-  let x = !cur_i * 48
+  let x = framer#frame * 48
   and y = i * 48 in
   Sdlvideo.rect ~x:x ~y:y ~w:48 ~h:48
 

@@ -30,20 +30,14 @@ let frames =
   done
 ; surface
 
-let cur_i = ref 0
-let acc   = ref 0.0
+let framer = new Framer.framing 0.1 4
 
 let update = function
-  | [`Float dt] -> acc := !acc +. dt
-                 ; if !acc >= 0.1
-                   then begin
-                     acc := !acc -. 0.1
-                   ; cur_i := (succ !cur_i) mod 4
-                   end
-  | _ -> ()
+  | [`Float dt] -> framer#update dt
+  | _           -> ()
 
 let current_frame () =
-  let frame = match !cur_i with
+  let frame = match framer#frame with
     | 3 -> 1
     | v -> v
   in

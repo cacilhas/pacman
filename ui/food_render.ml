@@ -24,24 +24,34 @@ let cells =
 ; Sdlhelpers.fill_sphere surface ~x:106 ~y:38 ~radius:10 cherry
 ; surface
 
-let cycle = ref 0.0
-let show  = ref true
+class blinking = object
+
+  val mutable cycle = 0.0
+  val mutable show  = true
+
+  method shown = show
+
+  method update dt =
+    cycle <- cycle +. dt
+  ; if cycle >= 0.25
+    then begin
+      cycle <- cycle -. 0.25
+    ; show <- not show
+    end
+end
+
+let blinker = new blinking
 
 let render_cell surface x y i =
-  if i = 1 || (!show && i = 2) || i > 2
+  if i = 1 || (blinker#shown && i = 2) || i > 2
   then let src_rect = Sdlvideo.rect ~x:(48*(i-1)) ~y:0      ~w:48 ~h:48
        and dst_rect = Sdlvideo.rect ~x:(48*x)     ~y:(48*y) ~w:48 ~h:48 in
        Sdlvideo.blit_surface ~src:cells   ~src_rect:src_rect
                              ~dst:surface ~dst_rect:dst_rect ()
 
 let update = function
-  | [`Float dt] -> cycle := !cycle +. dt
-                 ; if !cycle >= 0.25
-                   then begin
-                     cycle := !cycle -. 0.25
-                   ; show := not !show
-                   end
-  | _ -> ()
+  | [`Float dt] -> blinker#update dt
+  | _           -> ()
 
 let render surface =
   for y = 0 to 20 do
