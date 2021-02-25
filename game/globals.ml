@@ -59,8 +59,9 @@ let score i =
 let highscore () = 10 * g.highscore
 
 let deal_with_collision = function
-  | Some `FRIGHTENED -> score 10                  |> ignore
-  | Some _           ->  Signal.emit "restart" [] |> ignore
+  | Some `FRIGHTENED -> score 10                 |> ignore
+                      ; Signal.emit "eating" []  |> ignore
+  | Some _           -> Signal.emit "restart" [] |> ignore
   | None             -> ()
 
 let collision = function
@@ -104,11 +105,13 @@ let update = function
   | [`Float dt] -> g.passed_time <- g.passed_time +. dt
                  ; (match g.mode with
                     | `SCATTER    -> if g.passed_time >= g.scatter_time
-                                    then Signal.emit "chstatus" [`String (string_of_status `CHASE)]
+                                     then Signal.emit "chstatus" [`String (string_of_status `CHASE)]
                     | `CHASE      -> if g.passed_time >= g.chase_time
-                                    then Signal.emit "chstatus" [`String (string_of_status `SCATTER)]
+                                     then Signal.emit "chstatus" [`String (string_of_status `SCATTER)]
                     | `FRIGHTENED -> if g.passed_time >= g.frightened_time
-                                    then Signal.emit "chstatus" [`String (string_of_status `CHASE)]
+                                     then Signal.emit "chstatus" [`String (string_of_status `CHASE)]
+                                   ; if g.frightened_time -. g.passed_time > 2.0
+                                     then Signal.emit "frightened" []
                     | _           -> ()
                    )
   | _           -> ()

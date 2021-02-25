@@ -53,9 +53,11 @@ end = struct
 end
 
 module Audio : sig
-  val init        : unit -> unit
-  val close       : unit -> unit
-  val play_scored : Signal.arg list -> unit
+  val init            : unit -> unit
+  val close           : unit -> unit
+  val play_eating     : Signal.arg list -> unit
+  val play_frightened : Signal.arg list -> unit
+  val play_scored     : Signal.arg list -> unit
 
 end = struct
   let init () =
@@ -67,9 +69,22 @@ end = struct
   let lazy_wakka = lazy (Sdlmixer.load_string Wakka.data)
   let wakka ()   = Lazy.force lazy_wakka
 
+  let lazy_eating = lazy (Sdlmixer.load_string Eating.data)
+  let eating ()   = Lazy.force lazy_eating
+
+  let lazy_frightend = lazy (Sdlmixer.load_string Frightened.data)
+  let frightened ()  = Lazy.force lazy_frightend
+
   let play_scored _ =
     if not (Sdlmixer.playing_channel 1)
     then wakka () |> Sdlmixer.play_channel ~channel:1 ~loops:1
+
+  let play_eating _ =
+    eating () |> Sdlmixer.play_channel ~channel:1 ~loops:1
+
+  let play_frightened _ =
+    if not (Sdlmixer.playing_channel 2)
+    then frightened () |> Sdlmixer.play_channel ~channel:2 ~loops:1
 end
 
 let running = ref true
@@ -108,10 +123,12 @@ let rec loop board ticks last_tick =
 
 let connect_handles () =
   Game.Connections.connect_handles ()
-; Signal.connect "update" Ghost.update       |> ignore
-; Signal.connect "update" Pacman.update      |> ignore
-; Signal.connect "scored" Audio.play_scored  |> ignore
-; Signal.connect "update" Food_render.update |> ignore
+; Signal.connect "eating" Audio.play_eating         |> ignore
+; Signal.connect "frightened" Audio.play_frightened |> ignore
+; Signal.connect "update" Ghost.update              |> ignore
+; Signal.connect "update" Pacman.update             |> ignore
+; Signal.connect "scored" Audio.play_scored         |> ignore
+; Signal.connect "update" Food_render.update        |> ignore
 
 let start_sdl () =
   Sdl.init [`AUDIO; `EVENTTHREAD; `TIMER; `VIDEO]
