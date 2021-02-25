@@ -35,7 +35,9 @@ let frames =
   ; Sdlhelpers.fill_circle surface ~x:(i*48+36) ~y:262 ~radius:10 white
   done
 ; for i = 0 to 3 do (* eyes *)
-    Sdlhelpers.fill_circle surface ~x:6   ~y:(i*48+16) ~radius:6 blue
+    Sdlhelpers.fill_circle surface ~x:(i*48+12) ~y:214 ~radius:10 white
+  ; Sdlhelpers.fill_circle surface ~x:(i*48+36) ~y:214 ~radius:10 white
+  ; Sdlhelpers.fill_circle surface ~x:6   ~y:(i*48+16) ~radius:6 blue
   ; Sdlhelpers.fill_circle surface ~x:30  ~y:(i*48+16) ~radius:6 blue
   ; Sdlhelpers.fill_circle surface ~x:54  ~y:(i*48+28) ~radius:6 blue
   ; Sdlhelpers.fill_circle surface ~x:78  ~y:(i*48+28) ~radius:6 blue
