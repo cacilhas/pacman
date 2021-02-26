@@ -1,0 +1,3 @@
+[submodule "signal"]
+	path = signal
+	url = git@github.com:cacilhas/signal.git
