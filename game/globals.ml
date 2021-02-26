@@ -50,8 +50,9 @@ let score i =
     match i with
       | 0 -> ()
       | 3 -> g.score <- g.score + 5
+           ; Signal.emit "eating" [] |> ignore
       | v -> g.score <- succ g.score
-            ; Signal.emit "scored" [`Int v]
+           ; Signal.emit "scored" [`Int v]
   end
 ; update_highscore ()
 ; g.score * 10
