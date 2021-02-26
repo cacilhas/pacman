@@ -1,4 +1,4 @@
-type handle = int32
+type handle = Handle.t
 type arg = [ `Float of float
            | `Int of int
            | `Pair of int * int
@@ -9,13 +9,11 @@ type handle_wrap = handle * (string * callback)
 
 type storage_t = {
   mutable debug     : bool
-; mutable available : handle
 ; mutable handles   : handle_wrap list
 }
 
 let storage = {
   debug     = false
-; available = 0l
 ; handles   = []
 }
 
@@ -25,18 +23,13 @@ let string_from_arg = function
   | `Pair (a, b)  -> Printf.sprintf "(%d, %d)" a b
   | `String value -> Printf.sprintf "\"%s\"" value
 
-let next_handle () =
-  let handle = storage.available in
-  storage.available <- Int32.succ handle
-; handle
-
 let log_connect signal id =
   if storage.debug
-  then Printf.eprintf "connected signal %s with handle %ld\n" signal id
+  then Printf.eprintf "connected signal %s with handle %s\n" signal (Uuidm.to_string id)
 
 let log_disconnect signal id =
   if storage.debug
-  then Printf.eprintf "handle %ld disconnected from signal %s\n" id signal
+  then Printf.eprintf "handle %s disconnected from signal %s\n" (Uuidm.to_string id) signal
 
 let log_emit signal (args : arg list) =
   if storage.debug
@@ -54,7 +47,7 @@ let get id = List.assoc id storage.handles
 let debug level = storage.debug <- level
 
 let connect signal cb =
-  let id = next_handle () in
+  let id = Handle.next () in
   storage.handles <- (id, (signal, cb)) :: storage.handles
 ; log_connect signal id
 ; id
@@ -67,6 +60,6 @@ let emit signal args =
 let disconnect signal id =
   let (name, _) = get id in
   if name != signal
-  then Failure (Printf.sprintf "signal %s doesn't match handle id %ld" signal id) |> raise
+  then Failure (Printf.sprintf "signal %s doesn't match handle id %s" signal (Uuidm.to_string id)) |> raise
 ; storage.handles <- List.remove_assoc id storage.handles
 ; log_disconnect signal id
