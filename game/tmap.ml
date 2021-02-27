@@ -22,18 +22,8 @@ let map = String.concat ""
   ; "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
   ]
 
-type direction = [ `UP
-                 | `DOWN
-                 | `LEFT
-                 | `RIGHT
-                 ]
-
-type nullable_direction = [ `NONE
-                          | `UP
-                          | `DOWN
-                          | `LEFT
-                          | `RIGHT
-                          ]
+type direction          = [%import: Tmap.direction]
+type nullable_direction = [%import: Tmap.nullable_direction]
 
 let centre       = 9
 let int_of_up    = 1

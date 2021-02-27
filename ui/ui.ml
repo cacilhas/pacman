@@ -10,7 +10,9 @@ end = struct
   let height = 1008
   let width  = 912
 
-  let resize (w, h) = Sdlvideo.set_video_mode ~w:w ~h:h ~bpp:32 [`DOUBLEBUF; `RESIZABLE]
+  let resize (w, h) = Sdlvideo.set_video_mode
+                      ~w:w ~h:h ~bpp:32
+                      [`DOUBLEBUF; `RESIZABLE]
 
   let lazy_screen = lazy (resize (width, height))
   let std ()      = Lazy.force lazy_screen
@@ -76,15 +78,17 @@ end = struct
   let frightened ()  = Lazy.force lazy_frightend
 
   let play_scored _ =
-    if not (Sdlmixer.playing_channel 1)
-    then wakka () |> Sdlmixer.play_channel ~channel:1 ~loops:1
+    if Sdlmixer.playing_channel 1
+    then ()
+    else wakka () |> Sdlmixer.play_channel ~channel:1 ~loops:1
 
   let play_eating _ =
     eating () |> Sdlmixer.play_channel ~channel:1 ~loops:1
 
   let play_frightened _ =
-    if not (Sdlmixer.playing_channel 2)
-    then frightened () |> Sdlmixer.play_channel ~channel:2 ~loops:1
+    if Sdlmixer.playing_channel 2
+    then ()
+    else frightened () |> Sdlmixer.play_channel ~channel:2 ~loops:1
 end
 
 let running = ref true
@@ -106,14 +110,17 @@ let rec handle_events () =
   begin
     match Sdlevent.wait_event () with
       | Sdlevent.KEYDOWN evt        -> handle_keypress evt.keysym
-      | Sdlevent.VIDEORESIZE (w, h) -> assert (Screen.std () = Screen.resize (w, h))
+      | Sdlevent.VIDEORESIZE (w, h) -> assert
+                                       (Screen.std () = Screen.resize (w, h))
       | _                           -> ()
   end
 ; handle_events ()
 
 let rec loop board ticks last_tick =
-  Sdlvideo.map_RGB (Screen.std ()) Sdlvideo.black |> Sdlvideo.fill_rect (Screen.std ())
-; Sdlvideo.map_RGB board Sdlvideo.black |> Sdlvideo.fill_rect board
+  Sdlvideo.map_RGB (Screen.std ()) Sdlvideo.black
+  |> Sdlvideo.fill_rect (Screen.std ())
+; Sdlvideo.map_RGB board Sdlvideo.black
+  |> Sdlvideo.fill_rect board
 ; update (ticks - last_tick)
 ; Screen.render board
 ; Sdlvideo.flip (Screen.std ())

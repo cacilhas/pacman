@@ -14,23 +14,28 @@ let frames =
   and blue = Sdlvideo.map_RGB surface Sdlvideo.blue in
   for i = 0 to 3 do (* ghosts *)
     Sdlhelpers.fill_semicircle surface ~x:(i*48+24) ~y:24 ~radius:23 blinky
-  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(i*48+1) ~y:24 ~w:46 ~h:18) surface blinky
+  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(i*48+1) ~y:24 ~w:46 ~h:18)
+      surface blinky
   ; Sdlhelpers.fill_circle surface ~x:(i*48+12) ~y:22 ~radius:10 white
   ; Sdlhelpers.fill_circle surface ~x:(i*48+36) ~y:22 ~radius:10 white
   ; Sdlhelpers.fill_semicircle surface ~x:(i*48+24) ~y:72 ~radius:23 pinky
-  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(i*48+1) ~y:72 ~w:46 ~h:18) surface pinky
+  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(i*48+1) ~y:72 ~w:46 ~h:18)
+      surface pinky
   ; Sdlhelpers.fill_circle surface ~x:(i*48+12) ~y:70 ~radius:10 white
   ; Sdlhelpers.fill_circle surface ~x:(i*48+36) ~y:70 ~radius:10 white
   ; Sdlhelpers.fill_semicircle surface ~x:(i*48+24) ~y:120 ~radius:23 inky
-  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(i*48+1) ~y:120 ~w:46 ~h:18) surface inky
+  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(i*48+1) ~y:120 ~w:46 ~h:18)
+      surface inky
   ; Sdlhelpers.fill_circle surface ~x:(i*48+12) ~y:118 ~radius:10 white
   ; Sdlhelpers.fill_circle surface ~x:(i*48+36) ~y:118 ~radius:10 white
   ; Sdlhelpers.fill_semicircle surface ~x:(i*48+24) ~y:168 ~radius:23 clyde
-  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(i*48+1) ~y:168 ~w:46 ~h:18) surface clyde
+  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(i*48+1) ~y:168 ~w:46 ~h:18)
+      surface clyde
   ; Sdlhelpers.fill_circle surface ~x:(i*48+12) ~y:166 ~radius:10 white
   ; Sdlhelpers.fill_circle surface ~x:(i*48+36) ~y:166 ~radius:10 white
   ; Sdlhelpers.fill_semicircle surface ~x:(i*48+24) ~y:264 ~radius:23 blue
-  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(i*48+1) ~y:264 ~w:46 ~h:18) surface blue
+  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(i*48+1) ~y:264 ~w:46 ~h:18)
+      surface blue
   ; Sdlhelpers.fill_circle surface ~x:(i*48+12) ~y:262 ~radius:10 white
   ; Sdlhelpers.fill_circle surface ~x:(i*48+36) ~y:262 ~radius:10 white
   done
@@ -46,86 +51,166 @@ let frames =
   ; Sdlhelpers.fill_circle surface ~x:162 ~y:(i*48+16) ~radius:6 blue
   ; Sdlhelpers.fill_circle surface ~x:186 ~y:(i*48+16) ~radius:6 blue
   done
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0   ~y:42  ~w:6 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:12  ~y:42  ~w:6 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:24  ~y:42  ~w:6 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:36  ~y:42  ~w:5 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:55  ~y:42  ~w:6 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:66  ~y:42  ~w:6 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:78  ~y:42  ~w:6 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:90  ~y:42  ~w:5 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:42  ~w:6 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:108 ~y:42  ~w:6 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:120 ~y:42  ~w:6 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:132 ~y:42  ~w:5 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:150 ~y:42  ~w:6 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:162 ~y:42  ~w:6 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:174 ~y:42  ~w:6 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:186 ~y:42  ~w:5 ~h:5) surface blinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0   ~y:90  ~w:6 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:12  ~y:90  ~w:6 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:24  ~y:90  ~w:6 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:36  ~y:90  ~w:5 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:55  ~y:90  ~w:6 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:66  ~y:90  ~w:6 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:78  ~y:90  ~w:6 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:90  ~y:90  ~w:5 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:90  ~w:6 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:108 ~y:90  ~w:6 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:120 ~y:90  ~w:6 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:132 ~y:90  ~w:5 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:150 ~y:90  ~w:6 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:162 ~y:90  ~w:6 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:174 ~y:90  ~w:6 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:186 ~y:90  ~w:5 ~h:5) surface pinky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0   ~y:138 ~w:6 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:12  ~y:138 ~w:6 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:24  ~y:138 ~w:6 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:36  ~y:138 ~w:5 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:55  ~y:138 ~w:6 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:66  ~y:138 ~w:6 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:78  ~y:138 ~w:6 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:90  ~y:138 ~w:5 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:138 ~w:6 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:108 ~y:138 ~w:6 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:120 ~y:138 ~w:6 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:132 ~y:138 ~w:5 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:150 ~y:138 ~w:6 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:162 ~y:138 ~w:6 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:174 ~y:138 ~w:6 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:186 ~y:138 ~w:5 ~h:5) surface inky
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0   ~y:186 ~w:6 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:12  ~y:186 ~w:6 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:24  ~y:186 ~w:6 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:36  ~y:186 ~w:5 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:55  ~y:186 ~w:6 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:66  ~y:186 ~w:6 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:78  ~y:186 ~w:6 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:90  ~y:186 ~w:5 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:186 ~w:6 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:108 ~y:186 ~w:6 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:120 ~y:186 ~w:6 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:132 ~y:186 ~w:5 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:150 ~y:186 ~w:6 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:162 ~y:186 ~w:6 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:174 ~y:186 ~w:6 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:186 ~y:186 ~w:5 ~h:5) surface clyde
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0   ~y:282 ~w:6 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:12  ~y:282 ~w:6 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:24  ~y:282 ~w:6 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:36  ~y:282 ~w:5 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:55  ~y:282 ~w:6 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:66  ~y:282 ~w:6 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:78  ~y:282 ~w:6 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:90  ~y:282 ~w:5 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:282 ~w:6 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:108 ~y:282 ~w:6 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:120 ~y:282 ~w:6 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:132 ~y:282 ~w:5 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:150 ~y:282 ~w:6 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:162 ~y:282 ~w:6 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:174 ~y:282 ~w:6 ~h:5) surface blue
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:186 ~y:282 ~w:5 ~h:5) surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0   ~y:42  ~w:6 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:12  ~y:42  ~w:6 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:24  ~y:42  ~w:6 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:36  ~y:42  ~w:5 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:55  ~y:42  ~w:6 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:66  ~y:42  ~w:6 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:78  ~y:42  ~w:6 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:90  ~y:42  ~w:5 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:42  ~w:6 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:108 ~y:42  ~w:6 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:120 ~y:42  ~w:6 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:132 ~y:42  ~w:5 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:150 ~y:42  ~w:6 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:162 ~y:42  ~w:6 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:174 ~y:42  ~w:6 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:186 ~y:42  ~w:5 ~h:5)
+    surface blinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0   ~y:90  ~w:6 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:12  ~y:90  ~w:6 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:24  ~y:90  ~w:6 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:36  ~y:90  ~w:5 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:55  ~y:90  ~w:6 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:66  ~y:90  ~w:6 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:78  ~y:90  ~w:6 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:90  ~y:90  ~w:5 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:90  ~w:6 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:108 ~y:90  ~w:6 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:120 ~y:90  ~w:6 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:132 ~y:90  ~w:5 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:150 ~y:90  ~w:6 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:162 ~y:90  ~w:6 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:174 ~y:90  ~w:6 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:186 ~y:90  ~w:5 ~h:5)
+    surface pinky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0   ~y:138 ~w:6 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:12  ~y:138 ~w:6 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:24  ~y:138 ~w:6 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:36  ~y:138 ~w:5 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:55  ~y:138 ~w:6 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:66  ~y:138 ~w:6 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:78  ~y:138 ~w:6 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:90  ~y:138 ~w:5 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:138 ~w:6 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:108 ~y:138 ~w:6 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:120 ~y:138 ~w:6 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:132 ~y:138 ~w:5 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:150 ~y:138 ~w:6 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:162 ~y:138 ~w:6 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:174 ~y:138 ~w:6 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:186 ~y:138 ~w:5 ~h:5)
+    surface inky
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0   ~y:186 ~w:6 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:12  ~y:186 ~w:6 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:24  ~y:186 ~w:6 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:36  ~y:186 ~w:5 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:55  ~y:186 ~w:6 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:66  ~y:186 ~w:6 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:78  ~y:186 ~w:6 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:90  ~y:186 ~w:5 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:186 ~w:6 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:108 ~y:186 ~w:6 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:120 ~y:186 ~w:6 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:132 ~y:186 ~w:5 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:150 ~y:186 ~w:6 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:162 ~y:186 ~w:6 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:174 ~y:186 ~w:6 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:186 ~y:186 ~w:5 ~h:5)
+    surface clyde
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0   ~y:282 ~w:6 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:12  ~y:282 ~w:6 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:24  ~y:282 ~w:6 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:36  ~y:282 ~w:5 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:55  ~y:282 ~w:6 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:66  ~y:282 ~w:6 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:78  ~y:282 ~w:6 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:90  ~y:282 ~w:5 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:282 ~w:6 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:108 ~y:282 ~w:6 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:120 ~y:282 ~w:6 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:132 ~y:282 ~w:5 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:150 ~y:282 ~w:6 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:162 ~y:282 ~w:6 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:174 ~y:282 ~w:6 ~h:5)
+    surface blue
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:186 ~y:282 ~w:5 ~h:5)
+    surface blue
   (* LEFT *)
 ; Sdlhelpers.fill_circle surface ~x:6  ~y:214 ~radius:6 blue
 ; Sdlhelpers.fill_circle surface ~x:30 ~y:214 ~radius:6 blue

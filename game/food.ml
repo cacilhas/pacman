@@ -47,11 +47,15 @@ let index_of_xy x y =
   then 0
   else y*19 + x
 
-let get_cell (x, y) = match int_of_char map.(index_of_xy x y) with
-  | 3     -> if cherry.show
-             then 3
-             else 0
-  | value -> value
+let get_cell (x, y) =
+  let value = int_of_char map.(index_of_xy x y) in
+  if value = 3
+  then begin
+    if cherry.show
+    then 3
+    else 0
+  end
+  else value
 
 let eaten i =
   if map.(i) = '\x03'

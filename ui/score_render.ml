@@ -8,53 +8,91 @@ let numbers =
   in
   let color = Sdlvideo.map_RGB surface Sdlvideo.white in
   (* 0 *)
-  Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0  ~y:0  ~w:16 ~h:2)  surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0  ~y:0  ~w:2  ~h:32) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:14 ~y:0  ~w:2  ~h:32) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0  ~y:30 ~w:16 ~h:2)  surface color
+  Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0  ~y:0  ~w:16 ~h:2)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0  ~y:0  ~w:2  ~h:32)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:14 ~y:0  ~w:2  ~h:32)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:0  ~y:30 ~w:16 ~h:2)
+    surface color
   (* 1 *)
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:30 ~y:0 ~w:2 ~h:32) surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:30 ~y:0 ~w:2 ~h:32)
+    surface color
   (* 2 *)
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:32 ~y:0  ~w:16 ~h:2)  surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:32 ~y:0  ~w:2  ~h:16) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:32 ~y:15 ~w:16 ~h:2)  surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:46 ~y:16 ~w:2  ~h:16) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:32 ~y:30 ~w:16 ~h:2)  surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:32 ~y:0  ~w:16 ~h:2)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:32 ~y:0  ~w:2  ~h:16)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:32 ~y:15 ~w:16 ~h:2)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:46 ~y:16 ~w:2  ~h:16)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:32 ~y:30 ~w:16 ~h:2)
+    surface color
   (* 3 *)
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:48 ~y:0  ~w:16 ~h:2) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:62 ~y:0  ~w:2 ~h:32) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:48 ~y:15 ~w:16 ~h:2) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:48 ~y:30 ~w:16 ~h:2) surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:48 ~y:0  ~w:16 ~h:2)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:62 ~y:0  ~w:2 ~h:32)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:48 ~y:15 ~w:16 ~h:2)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:48 ~y:30 ~w:16 ~h:2)
+    surface color
   (* 4 *)
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:64 ~y:0  ~w:2  ~h:16) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:78 ~y:0  ~w:2  ~h:32) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:64 ~y:15 ~w:16 ~h:2)  surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:64 ~y:0  ~w:2  ~h:16)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:78 ~y:0  ~w:2  ~h:32)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:64 ~y:15 ~w:16 ~h:2)
+    surface color
   (* 5 *)
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:80 ~y:0  ~w:16 ~h:2)  surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:80 ~y:0  ~w:2  ~h:16) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:80 ~y:15 ~w:16 ~h:2)  surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:94 ~y:16 ~w:2  ~h:16) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:80 ~y:30 ~w:16 ~h:2)  surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:80 ~y:0  ~w:16 ~h:2)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:80 ~y:0  ~w:2  ~h:16)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:80 ~y:15 ~w:16 ~h:2)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:94 ~y:16 ~w:2  ~h:16)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:80 ~y:30 ~w:16 ~h:2)
+    surface color
   (* 6 *)
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:0  ~w:16 ~h:2)  surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:0  ~w:2  ~h:32) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:15 ~w:16 ~h:2)  surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:110 ~y:16 ~w:2  ~h:16) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:30 ~w:16 ~h:2)  surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:0  ~w:16 ~h:2)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:0  ~w:2  ~h:32)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:15 ~w:16 ~h:2)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:110 ~y:16 ~w:2  ~h:16)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:96  ~y:30 ~w:16 ~h:2)
+    surface color
   (* 7 *)
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:112 ~y:0 ~w:16 ~h:2)  surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:126 ~y:0 ~w:2  ~h:32) surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:112 ~y:0 ~w:16 ~h:2)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:126 ~y:0 ~w:2  ~h:32)
+    surface color
   (* 8 *)
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:128 ~y:0  ~w:16 ~h:2)  surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:128 ~y:0  ~w:2  ~h:32) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:142 ~y:0  ~w:2  ~h:32) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:128 ~y:15 ~w:16 ~h:2)  surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:128 ~y:30 ~w:16 ~h:2)  surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:128 ~y:0  ~w:16 ~h:2)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:128 ~y:0  ~w:2  ~h:32)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:142 ~y:0  ~w:2  ~h:32)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:128 ~y:15 ~w:16 ~h:2)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:128 ~y:30 ~w:16 ~h:2)
+    surface color
   (* 9 *)
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:144 ~y:0  ~w:16 ~h:2)  surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:144 ~y:0  ~w:2  ~h:16) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:158 ~y:0  ~w:2  ~h:32) surface color
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:144 ~y:15 ~w:16 ~h:2)  surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:144 ~y:0  ~w:16 ~h:2)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:144 ~y:0  ~w:2  ~h:16)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:158 ~y:0  ~w:2  ~h:32)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:144 ~y:15 ~w:16 ~h:2)
+    surface color
 ; surface
 
 let render surface (x, y) value =

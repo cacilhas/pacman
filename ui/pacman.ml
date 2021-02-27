@@ -19,14 +19,18 @@ let frames =
 ; for x = 0 to 24 do
     let h = x / 2 in
     let y = 24 - h/2 in
-    Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(72+x)  ~y:y ~w:1 ~h:h) surface bg
-  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(168-x) ~y:y ~w:1 ~h:h) surface bg
+    Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(72+x)  ~y:y ~w:1 ~h:h)
+      surface bg
+  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(168-x) ~y:y ~w:1 ~h:h)
+      surface bg
   done
 ; for x = 0 to 24 do
     let h = x in
     let y = 24 - h/2 in
-    Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(120+x) ~y:y ~w:1 ~h:h) surface bg
-  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(216-x) ~y:y ~w:1 ~h:h) surface bg
+    Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(120+x) ~y:y ~w:1 ~h:h)
+      surface bg
+  ; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:(216-x) ~y:y ~w:1 ~h:h)
+      surface bg
   done
 ; surface
 
@@ -37,9 +41,11 @@ let update = function
   | _           -> ()
 
 let current_frame () =
-  let frame = match framer#frame with
-    | 3 -> 1
-    | v -> v
+  let frame =
+    let value = framer#frame in
+    if value = 3
+    then 1
+    else value
   in
   match Game.Pacman.looking () with
     | `LEFT  -> Sdlvideo.rect ~x:(frame*48+144) ~y:0 ~w:48 ~h:48

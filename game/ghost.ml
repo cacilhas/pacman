@@ -5,7 +5,7 @@ class ghost scatter_target chase_target = object (self)
 
   val mutable going_out = true
   val mutable position  = home
-  val mutable last_pos  = (fst home - 1, snd home)
+  val mutable last_pos  = let (x, y) = home in (x - 1, y)
   val mutable target    = outside
   val mutable offset    = 0.0
   val mutable going      : Tmap.direction = `RIGHT
@@ -14,7 +14,7 @@ class ghost scatter_target chase_target = object (self)
   method restart () =
     going_out  <- true
   ; position   <- home
-  ; last_pos   <- (fst home - 1, snd home)
+  ; last_pos   <- (let (x, y) = home in (x - 1, y))
   ; target     <- outside
   ; offset     <- 0.0
   ; going      <- `RIGHT
@@ -53,20 +53,39 @@ class ghost scatter_target chase_target = object (self)
     last_pos <- position
   ; position <- new_position
 
-  method private back =
-    let (x, y) = position
-    and (lx, ly) = last_pos in
+  method private back_out_of_screen =
+    let (x, _) = position
+    and (lx, _) = last_pos in
     if x <= 0 && lx >=18
-    then `LEFT
+    then Some `LEFT
     else if x >= 18 && lx <= 0
-    then `RIGHT
-    else if lx < x
-    then `LEFT
+    then Some `RIGHT
+    else None
+
+  method private moved_x =
+    let (x, _) = position
+    and (lx, _) = last_pos in
+    if lx < x
+    then Some `LEFT
     else if lx > x
-    then `RIGHT
-    else if ly < y
+    then Some `RIGHT
+    else None
+
+  method private moved_y =
+    let (_, y) = position
+    and (_, ly) = last_pos in
+    if ly < y
     then `UP
     else `DOWN
+
+  method private back =
+    match self#back_out_of_screen with
+    | Some direction -> direction
+    | None           -> begin
+      match self#moved_x with
+      | Some direction -> direction
+      | None           -> self#moved_y
+    end
 
   method private distance dir =
     let (x, y) = position

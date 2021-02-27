@@ -1,8 +1,4 @@
-type status = [ `CHASE
-              | `EATEN
-              | `FRIGHTENED
-              | `SCATTER
-              ]
+type status = [%import: Globals.status]
 
 type globals = {
   mutable chase_time      : float
@@ -106,11 +102,14 @@ let update = function
   | [`Float dt] -> g.passed_time <- g.passed_time +. dt
                  ; (match g.mode with
                     | `SCATTER    -> if g.passed_time >= g.scatter_time
-                                     then Signal.emit "chstatus" [`String (string_of_status `CHASE)]
+                                     then Signal.emit "chstatus"
+                                          [`String (string_of_status `CHASE)]
                     | `CHASE      -> if g.passed_time >= g.chase_time
-                                     then Signal.emit "chstatus" [`String (string_of_status `SCATTER)]
+                                     then Signal.emit "chstatus"
+                                          [`String (string_of_status `SCATTER)]
                     | `FRIGHTENED -> if g.passed_time >= g.frightened_time
-                                     then Signal.emit "chstatus" [`String (string_of_status `CHASE)]
+                                     then Signal.emit "chstatus"
+                                          [`String (string_of_status `CHASE)]
                                    ; if g.frightened_time -. g.passed_time > 2.0
                                      then Signal.emit "frightened" []
                     | _           -> ()

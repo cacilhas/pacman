@@ -1,5 +1,5 @@
 (library
   (name game)
   (inline_tests)
-  (preprocess (pps ppx_inline_test))
+  (preprocess (staged_pps ppx_import ppx_inline_test))
   (libraries signal))

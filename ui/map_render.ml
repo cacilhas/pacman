@@ -8,16 +8,29 @@ let walls =
   in
   let color = Sdlvideo.map_RGB surface (84, 128, 192)
   and bg = Sdlvideo.map_RGB surface Sdlvideo.black in
-  Sdlhelpers.fill_circle surface ~x:24 ~y:24 ~radius:6 color                          (* 0 = lonely *)
+  (* 0 = lonely *)
+  Sdlhelpers.fill_circle surface ~x:24 ~y:24 ~radius:6 color
 ; Sdlhelpers.fill_circle surface ~x:24 ~y:24 ~radius:4 bg
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:66  ~y:0  ~w:12 ~h:24) surface color (* 48 = UP *)
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:68  ~y:0  ~w:8  ~h:24) surface bg
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:114 ~y:24 ~w:12 ~h:24) surface color (* 96 = DOWN *)
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:116 ~y:24 ~w:8  ~h:24) surface bg
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:144 ~y:18 ~w:24 ~h:12) surface color (* 144 = LEFT *)
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:144 ~y:20 ~w:24 ~h:8)  surface bg
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:216 ~y:18 ~w:24 ~h:12) surface color (* 192 = RIGHT *)
-; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:216 ~y:20 ~w:24 ~h:8) surface bg
+  (* 48 = UP *)
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:66  ~y:0  ~w:12 ~h:24)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:68  ~y:0  ~w:8  ~h:24)
+    surface bg
+  (* 96 = DOWN *)
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:114 ~y:24 ~w:12 ~h:24)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:116 ~y:24 ~w:8  ~h:24)
+    surface bg
+  (* 144 = LEFT *)
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:144 ~y:18 ~w:24 ~h:12)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:144 ~y:20 ~w:24 ~h:8)
+    surface bg
+  (* 192 = RIGHT *)
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:216 ~y:18 ~w:24 ~h:12)
+    surface color
+; Sdlvideo.fill_rect ~rect:(Sdlvideo.rect ~x:216 ~y:20 ~w:24 ~h:8)
+    surface bg
 ; surface
 
 
@@ -38,17 +51,21 @@ let render_cell surface x y =
   if n*s*e*w = 0 && n+s+e+w != 0
   then begin
     if n = 0
-    then Sdlvideo.blit_surface ~src:walls   ~src_rect:(Sdlvideo.rect ~x:48 ~y:0 ~w:48 ~h:48)
-                               ~dst:surface ~dst_rect:dst_rect ()
+    then Sdlvideo.blit_surface
+           ~src:walls   ~src_rect:(Sdlvideo.rect ~x:48 ~y:0 ~w:48 ~h:48)
+           ~dst:surface ~dst_rect:dst_rect ()
 ;   if s = 0
-    then Sdlvideo.blit_surface ~src:walls   ~src_rect:(Sdlvideo.rect ~x:96 ~y:0 ~w:48 ~h:48)
-                               ~dst:surface ~dst_rect:dst_rect ()
+    then Sdlvideo.blit_surface
+           ~src:walls   ~src_rect:(Sdlvideo.rect ~x:96 ~y:0 ~w:48 ~h:48)
+           ~dst:surface ~dst_rect:dst_rect ()
 ;   if e = 0
-    then Sdlvideo.blit_surface ~src:walls   ~src_rect:(Sdlvideo.rect ~x:144 ~y:0 ~w:48 ~h:48)
-                               ~dst:surface ~dst_rect:dst_rect ()
+    then Sdlvideo.blit_surface
+           ~src:walls   ~src_rect:(Sdlvideo.rect ~x:144 ~y:0 ~w:48 ~h:48)
+           ~dst:surface ~dst_rect:dst_rect ()
 ;   if w = 0
-    then Sdlvideo.blit_surface ~src:walls   ~src_rect:(Sdlvideo.rect ~x:192 ~y:0 ~w:48 ~h:48)
-                               ~dst:surface ~dst_rect:dst_rect ()
+    then Sdlvideo.blit_surface
+           ~src:walls   ~src_rect:(Sdlvideo.rect ~x:192 ~y:0 ~w:48 ~h:48)
+           ~dst:surface ~dst_rect:dst_rect ()
   end
 
 let render surface =
